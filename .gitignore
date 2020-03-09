@@ -1,0 +1,11 @@
+# Do not track these files
+
+*.zip
+*.tar
+*~
+*.swp
+
+plots/*
+archive/*
+
+
