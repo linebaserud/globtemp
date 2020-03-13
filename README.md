@@ -1,5 +1,7 @@
 # globtemp
 
+Plot global temperature anomalies for desired reference period
+
 ![test](/NASA_09032020.png)
 
 
