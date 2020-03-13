@@ -8,4 +8,6 @@
 plots/*
 archive/*
 
+.RData
+.Rhistory
 

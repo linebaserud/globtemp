@@ -20,7 +20,7 @@ source("functions/distrCol.R")
 source("functions/readCopernicus.R")
 source("functions/readHadCRUT.R")
 source("functions/readNASA.R")
-source("functions/yearlyCopernicus")
+source("functions/yearlyCopernicus.R")
 
 # user input -----------------------------------------------------------------------------
 
@@ -29,11 +29,14 @@ refs<-1961            # choose start reference period
 refe<-1990            # choose end reference period
 period <- 'Yearly'    # type of data to plot, e.g. 'Yearly', 'Jan', 'Feb', ...
 
+orig<-F
+
+
 # get data ----------------------------------------------------------------------------------
 
 # NASA/GISS
 if (!is.na(match('NASA',datasets))){
-  D <- readNASA("GLB.Ts+dSST_Jan2020.csv",period) 
+  D <- readNASA("data/GLB.Ts+dSST_Jan2020.csv",period) 
   refsNASA <- 1951
   refeNASA <- 1980
   year1 <- 1880
@@ -45,7 +48,7 @@ if (!is.na(match('NASA',datasets))){
 
 # Copernicus
 if (!is.na(match('Copernicus',datasets))){
-  D2 <- readCopernicus("ts_1month_anomaly_Global_ea_2t_202001_v01.csv",period) # read copernicus
+  D2 <- readCopernicus("data/ts_1month_anomaly_Global_ea_2t_202001_v01.csv",period) # read copernicus
   #D2 <- data.frame(y=D2in$y,val=D2in$Jan)
   
   if (period== 'Yearly'){D2<-yearly}
@@ -63,11 +66,11 @@ if (!is.na(match('Copernicus',datasets))){
 # HadCRUT4
 if (!is.na(match('HadCRUT',datasets))){
   if (period != 'Yearly'){
-    D3in <- readHadCRUT("Hadcrut4_06022020",period)
+    D3in <- readHadCRUT("data/Hadcrut4_06022020",period)
     D3 <- data.frame(y=D3in$y,val=D3in$val)
   }
   if (period== 'Yearly'){
-    D3in <- read.table(file="Hadcrut4_annual_09032020")
+    D3in <- read.table(file="data/Hadcrut4_annual_09032020")
     D3 <- data.frame(y=D3in$V1,val=D3in$V2) 
   }
   refsHad <- 1961
@@ -93,7 +96,7 @@ if (!is.na(match('NASA',datasets))){
     labs(subtitle=paste(textNASA))+
     geom_line(aes(y=D$val-m_new,x=D$y),size=1,linetype="solid",color="black")+ 
     geom_point(aes(y=D$val-m_new,x=D$y),pch=16,size=4,color=D$col)+
-    geom_line(aes(y=D$val,x=D$y),size=1,linetype="solid",color="grey") 
+    if (orig){geom_line(aes(y=D$val,x=D$y),size=1,linetype="solid",color="grey")} # plot original without shift of reference period
 }
 
 # Copernicus

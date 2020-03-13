@@ -1,7 +1,7 @@
 # read NASA
 
 readNASA <- function(filename,period){
-  Din <- read.table(file="GLB.Ts+dSST_Jan2020.csv",header=TRUE,skip=1,sep=",")
+  Din <- read.table(file=filename,header=TRUE,skip=1,sep=",")
   
   if (period=='Jan') {tmp_in=Din$Jan}
   if (period=='Feb') {tmp_in=Din$Feb}
