@@ -1,51 +1,64 @@
-# read monthly Copernicus
-# create dataframe for all months
+# function: readCopernicus
+# description: gives either montly or yearly values depending on input
+# input: filename, period (e.g. 'Jan' or 'Yearly')
+# output: dataframe with values
+#
+# created Mar 13 2020
+# author: lineb@met.no
+
+# ----------------------------------------------------------------------------------------------------
 
 readCopernicus <- function(filename,period){
 
-Din <- read.table(file=filename,header=TRUE,skip=2,sep=",") 
+  Din <- read.table(file=filename,header=TRUE,skip=2,sep=",") 
 
-rr=c("01","02","03","04","05","06","07","08","09","10","11","12")
+  rr=c("01","02","03","04","05","06","07","08","09","10","11","12")
 
-for (ind in 1:length(rr)){
-mnd=data.frame()
-for (n in 1:length(Din$Month)){
-       tempstr<-as.character(Din$Month[n])
-       if(endsWith(tempstr,rr[ind])){
-           tmp_mnd<-data.frame(m=Din$Month[n],glob=Din$global[n],y=as.numeric(substr(tempstr,1,4)))
-           mnd <- rbind(mnd,tmp_mnd)
-}}
-if (rr[ind]=="01"){jan=mnd}
-if (rr[ind]=="02"){feb=mnd}
-if (rr[ind]=="03"){mar=mnd}
-if (rr[ind]=="04"){apr=mnd}
-if (rr[ind]=="05"){may=mnd}
-if (rr[ind]=="06"){jun=mnd}
-if (rr[ind]=="07"){jul=mnd}
-if (rr[ind]=="08"){aug=mnd}
-if (rr[ind]=="09"){sep=mnd}
-if (rr[ind]=="10"){okt=mnd}
-if (rr[ind]=="11"){nov=mnd}
-if (rr[ind]=="12"){dec=mnd}
-}
-
-if (length(jan$glob)>length(feb$glob)){feb=rbind(feb,'NAN')}
-if (length(jan$glob)>length(mar$glob)){mar=rbind(mar,'NAN')}
-if (length(jan$glob)>length(apr$glob)){apr=rbind(apr,'NAN')}
-if (length(jan$glob)>length(may$glob)){may=rbind(may,'NAN')}
-if (length(jan$glob)>length(jun$glob)){jun=rbind(jun,'NAN')}
-if (length(jan$glob)>length(jul$glob)){jul=rbind(jul,'NAN')}
-if (length(jan$glob)>length(aug$glob)){aug=rbind(aug,'NAN')}
-if (length(jan$glob)>length(sep$glob)){sep=rbind(sep,'NAN')}
-if (length(jan$glob)>length(okt$glob)){okt=rbind(okt,'NAN')}
-if (length(jan$glob)>length(nov$glob)){nov=rbind(nov,'NAN')}
-if (length(jan$glob)>length(dec$glob)){dec=rbind(dec,'NAN')}
-
-# ------------------------------------------------------------------------------------------------
-
-D2 <- data.frame(y=jan$y,Jan=jan$glob,Feb=feb$glob,Mar=mar$glob,Apr=apr$glob,May=may$glob,Jun=jun$glob,Jul=jul$glob,Aug=aug$glob,Sep=sep$glob,Okt=okt$glob,Nov=nov$glob,Dec=dec$glob) # data frame all months
-
-return(D2)
+  for (ind in 1:length(rr)){
+    mnd=data.frame()
+    for (n in 1:length(Din$Month)){
+      tempstr<-as.character(Din$Month[n])
+      if(endsWith(tempstr,rr[ind])){
+        tmp_mnd<-data.frame(m=Din$Month[n],glob=Din$global[n],y=as.numeric(substr(tempstr,1,4)))
+        mnd <- rbind(mnd,tmp_mnd)
+      }
+    }
+    if (rr[ind]=="01"){jan=mnd}
+    if (rr[ind]=="02"){feb=mnd}
+    if (rr[ind]=="03"){mar=mnd}
+    if (rr[ind]=="04"){apr=mnd}
+    if (rr[ind]=="05"){may=mnd}
+    if (rr[ind]=="06"){jun=mnd}
+    if (rr[ind]=="07"){jul=mnd}
+    if (rr[ind]=="08"){aug=mnd}
+    if (rr[ind]=="09"){sep=mnd}
+    if (rr[ind]=="10"){oct=mnd}
+    if (rr[ind]=="11"){nov=mnd}
+    if (rr[ind]=="12"){dec=mnd}
+  }
+  if (period != 'Yearly'){
+    if (period == 'Jan'){D2 <- data.frame(y=jan$y,val=jan$glob)}
+    if (period == 'Feb'){D2 <- data.frame(y=feb$y,val=feb$glob)}
+    if (period == 'Mar'){D2 <- data.frame(y=mar$y,val=mar$glob)}
+    if (period == 'Apr'){D2 <- data.frame(y=apr$y,val=apr$glob)}
+    if (period == 'May'){D2 <- data.frame(y=may$y,val=may$glob)}
+    if (period == 'Jun'){D2 <- data.frame(y=jun$y,val=jun$glob)}
+    if (period == 'Jul'){D2 <- data.frame(y=jul$y,val=jul$glob)}
+    if (period == 'Aug'){D2 <- data.frame(y=aug$y,val=aug$glob)}
+    if (period == 'Sep'){D2 <- data.frame(y=sep$y,val=sep$glob)}
+    if (period == 'Oct'){D2 <- data.frame(y=oct$y,val=oct$glob)}
+    if (period == 'Nov'){D2 <- data.frame(y=nov$y,val=nov$glob)}
+    if (period == 'Dec'){D2 <- data.frame(y=dec$y,val=dec$glob)}
+  }
+  if (period == 'Yearly'){
+    D2y <- data.frame()
+    for (ix in 1:length(jan[,3])){
+      tmp_D2y <- sum(jan[ix,2],feb[ix,2],mar[ix,2],apr[ix,2],may[ix,2],jun[ix,2],jul[ix,2],aug[ix,2],sep[ix,2],oct[ix,2],nov[ix,2],dec[ix,2])
+      D2y <- rbind(D2y,tmp_D2y)
+    }
+    D2<-data.frame(y=jan[,3],val=D2y/12)
+  }
+  return(D2)
 }
 
 
