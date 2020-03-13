@@ -25,8 +25,16 @@ source("functions/yearlyCopernicus.R")
 # user input -----------------------------------------------------------------------------
 
 datasets <- c('NASA') # choose dataset(s), e.g. 'NASA', 'Copernicus', and/or 'HAdCRUT' 
-refs<-1961            # choose start reference period
-refe<-1990            # choose end reference period
+datasets <-c('Copernicus')
+
+
+filenameNASA <- "data/GLB.Ts+dSST_Jan2020.csv"
+filenameCop <-"data/ts_1month_anomaly_Global_ea_2t_202001_v01.csv"
+filenameHadYearly <-""
+filenameHadMonthly <-""
+
+refs<-1981            # choose start reference period
+refe<-2010            # choose end reference period
 period <- 'Yearly'    # type of data to plot, e.g. 'Yearly', 'Jan', 'Feb', ...
 
 orig<-F
@@ -36,7 +44,7 @@ orig<-F
 
 # NASA/GISS
 if (!is.na(match('NASA',datasets))){
-  D <- readNASA("data/GLB.Ts+dSST_Jan2020.csv",period) 
+  D <- readNASA(filenameNASA,period) 
   refsNASA <- 1951
   refeNASA <- 1980
   year1 <- 1880
@@ -48,16 +56,13 @@ if (!is.na(match('NASA',datasets))){
 
 # Copernicus
 if (!is.na(match('Copernicus',datasets))){
-  D2 <- readCopernicus("data/ts_1month_anomaly_Global_ea_2t_202001_v01.csv",period) # read copernicus
-  #D2 <- data.frame(y=D2in$y,val=D2in$Jan)
-  
-  if (period== 'Yearly'){D2<-yearly}
- 
+  D2 <- readCopernicus(filenameCop,period) # read copernicus
   refsCop <- 1981
   refeCop <- 2010
   year1 <- 1979 
   textCopernicus <- "ERA5 Copernicus Climate Change Service/ECMWF (original reference period: 1981-2010)"
   if (D2$y[1] > refs){textCopernicus <- "**Warning**: NO Copernicus data for choosen reference period"} # add before and do not plot
+  colnames(D2) <- c("y", "val")
   if (refsCop == refs & refeCop == refe){m2_new <- 0}
   if (refsCop != refs | refeCop != refe){m2_new <- anom2anom(D2,refs,refe)}
   D2 <- cbind(D2,distrCol(D2,m2_new)) # add colomn with colors for plotting
