@@ -17,4 +17,11 @@ Plot global temperature anomalies for desired reference period
 * [HadCRUT annual](https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.annual_ns_avg.txt)
 * [HadCRUT monthly](https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.monthly_ns_avg.txt)
 
-
+## User input:
+* choose dataset(s) to plot: e.g. datasets <- c('NASA') for only NASA/GISS or datasets <- c('NASA','Copernicus') for comparing NASA/GISS and Copernicus values
+* check that most recent (or just desired) files are used e.g. 
+filenameNASA <- "data/GLB.Ts+dSST_Jan2020.csv"
+filenameCop <-"data/ts_1month_anomaly_Global_ea_2t_202001_v01.csv"
+filenameHadYearly <-""
+filenameHadMonthly <-""
+*
