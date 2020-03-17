@@ -8,6 +8,8 @@
 # filenames in here to be able to update easy when new comes!!!
 # from all if to use else?
 # add warning eg hadcrut annual 2020 just jan value...
+# if datasets longer than 1 orig to F?
+# option to comapre jan vs july for one dataset vs yearly? period1 and period2 etc
 
 # libraries and functions ----------------------------------------------------------------
 
@@ -15,29 +17,26 @@ rm(list=ls())
 
 library("ggplot2")
 
-source("functions/anom2anom.R")
-source("functions/distrCol.R")
-source("functions/readCopernicus.R")
-source("functions/readHadCRUT.R")
-source("functions/readNASA.R")
-source("functions/yearlyCopernicus.R")
+source("functions/anom2anom.r")
+source("functions/distrCol.r")
+source("functions/readCopernicus.r")
+source("functions/readHadCRUT.r")
+source("functions/readNASA.r")
 
 # user input -----------------------------------------------------------------------------
 
-datasets <- c('NASA') # choose dataset(s), e.g. 'NASA', 'Copernicus', and/or 'HAdCRUT' 
-datasets <-c('Copernicus')
-
+datasets <- c('HadCRUT') # dataset(s) to plot, e.g. 'NASA', 'Copernicus', and/or 'HAdCRUT' 
 
 filenameNASA <- "data/GLB.Ts+dSST_Jan2020.csv"
 filenameCop <-"data/ts_1month_anomaly_Global_ea_2t_202001_v01.csv"
-filenameHadYearly <-""
-filenameHadMonthly <-""
+filenameHadYearly <-"data/Hadcrut4_annual_09032020"
+filenameHadMonthly <-"data/Hadcrut4_06022020"
 
-refs<-1981            # choose start reference period
-refe<-2010            # choose end reference period
-period <- 'Yearly'    # type of data to plot, e.g. 'Yearly', 'Jan', 'Feb', ...
+refs<-1981            # start reference period
+refe<-2010            # end reference period
+period <- 'Yearly'    # type of data, e.g. 'Yearly', 'Jan', or 'Feb', ...
 
-orig<-F
+orig<-F               # T/F plot data relative to original reference period
 
 
 # get data ----------------------------------------------------------------------------------
@@ -63,28 +62,22 @@ if (!is.na(match('Copernicus',datasets))){
   textCopernicus <- "ERA5 Copernicus Climate Change Service/ECMWF (original reference period: 1981-2010)"
   if (D2$y[1] > refs){textCopernicus <- "**Warning**: NO Copernicus data for choosen reference period"} # add before and do not plot
   colnames(D2) <- c("y", "val")
-  if (refsCop == refs & refeCop == refe){m2_new <- 0}
-  if (refsCop != refs | refeCop != refe){m2_new <- anom2anom(D2,refs,refe)}
-  D2 <- cbind(D2,distrCol(D2,m2_new)) # add colomn with colors for plotting
+  if (refsCop == refs & refeCop == refe){m2_new <- 0}                       # if ref period equal to original...
+  if (refsCop != refs | refeCop != refe){m2_new <- anom2anom(D2,refs,refe)} # ...else change ref period
+  D2 <- cbind(D2,distrCol(D2,m2_new))                                       # add colomn with colors for plotting
 }
 
 # HadCRUT4
 if (!is.na(match('HadCRUT',datasets))){
-  if (period != 'Yearly'){
-    D3in <- readHadCRUT("data/Hadcrut4_06022020",period)
-    D3 <- data.frame(y=D3in$y,val=D3in$val)
-  }
-  if (period== 'Yearly'){
-    D3in <- read.table(file="data/Hadcrut4_annual_09032020")
-    D3 <- data.frame(y=D3in$V1,val=D3in$V2) 
-  }
+  if (period != 'Yearly'){D3 <- readHadCRUT(filenameHadMonthly,period)}
+  if (period == 'Yearly'){D3 <- readHadCRUT(filenameHadYearly,period)}
   refsHad <- 1961
   refeHad <- 1990
   year1 <- 1850
   textHadCRUT <- "HadCRUT4: CRUTEM4 surface air temperature + HadSST3 sea-surface temperature (original reference period: 1961-1990)"
-  if (refsHad == refs & refeHad == refe){m3_new <- 0} # if choosen ref period is equal to original in dataset
-  if (refsHad != refs | refeHad != refe){m3_new <- anom2anom(D3,refs,refe)} # else change ref period
-  D3 <- cbind(D3,distrCol(D3,m3_new)) # add colomn with colors for plotting
+  if (refsHad == refs & refeHad == refe){m3_new <- 0}                       # if chosen ref period equal to original...
+  if (refsHad != refs | refeHad != refe){m3_new <- anom2anom(D3,refs,refe)} # ...else change ref period
+  D3 <- cbind(D3,distrCol(D3,m3_new))                                       # add colomn with colors for plotting
 }
 
 # plot data ----------------------------------------------------------------------------------
