@@ -24,4 +24,8 @@ filenameNASA <- "data/GLB.Ts+dSST_Jan2020.csv"
 filenameCop <-"data/ts_1month_anomaly_Global_ea_2t_202001_v01.csv"
 filenameHadYearly <-""
 filenameHadMonthly <-""
-*
+* set start and end of desired reference period: e.g. 
+refs<-1981
+refe<-2010
+* choose data to plot: e.g. 'Yearly', 'Jan', 'Feb',...
+* choose (True/False) if plot also relative to original reference period: e.g. orig<-F
