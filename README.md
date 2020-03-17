@@ -5,6 +5,10 @@ Plot global temperature anomalies for desired reference period
 ![test](/NASA_09032020.png)
 
 
+## Functions:
+* anom2anom.R: gereral function for changing the reference period for timeseries of anomalies
+* distrCol.R: general function for distribution of colors blue/red/black for anomalies under/over/equal to desired reference period
+* readCopernicus.R, readHadCRUT.R, and readNASA.R: functions for reading data from Copernicus/HadCRUT/NASA tables respectively, and giving out data frame for desired values, e.g. yearly data or only January data
 
 
 ## Data: 
