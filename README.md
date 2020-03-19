@@ -3,7 +3,7 @@
 Plot global temperature anomalies relative to desired reference period.
 
 ## Prerequisites
-globtemp requires the R package ggplot2
+R package ggplot2
 
 ## Functions:
 * readCopernicus.r, readHadCRUT.r, and readNASA.r: functions for reading data from Copernicus/HadCRUT/NASA tables, respectively.
