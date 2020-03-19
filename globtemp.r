@@ -4,10 +4,10 @@
 #
 
 #compare hadcru calc of monthly to yearly with yearly files
-#coipernicus period/jan vs yearly, yearly function do not taek nan
-# from all if to use else?
 # add warning eg hadcrut annual 2020 just jan value...
 # if datasets longer than 1 orig to F?
+# read from web e.g. read.csv(url("https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv"),header=TRUE,skip=1,sep=",")
+
 
 # libraries and functions ----------------------------------------------------------------
 
