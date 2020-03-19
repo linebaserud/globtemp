@@ -18,7 +18,7 @@ fun_list<-c("anom2anom.r",
             "readCopernicus.r",
             "readHadCRUT.r",
             "readNASA.r")
-for (fun in fun_list){source(paste0("functions/", fun))}
+for (fun in fun_list){source(paste0("functions/",fun))}
 
 # user input -----------------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ filenameCop <-"data/ts_1month_anomaly_Global_ea_2t_202001_v01.csv"
 filenameHadYearly <-"data/Hadcrut4_annual_09032020"
 filenameHadMonthly <-"data/Hadcrut4_06022020"
 
-datasets <- c('HadCRUT') # dataset(s) to plot, e.g. 'NASA', 'Copernicus', and/or 'HAdCRUT' 
+datasets <- c('NASA','Copernicus','HadCRUT') # dataset(s) to plot, e.g. 'NASA', 'Copernicus', and/or 'HAdCRUT' 
 
 refs<-1981            # start reference period
 refe<-2010            # end reference period
@@ -82,35 +82,39 @@ p=ggplot()+
   xlab("")+
   ylab("")+
   geom_hline(yintercept=0,color="black")+
-  labs(title=paste(period, "temperature anomalies relative to",refs,"-",refe))
+  labs(title=paste(period, "temperature anomalies (°C)  relative to",refs,"-",refe))
 
 # NASA
-if (!is.na(match('NASA',datasets))){
+if (!is.na(match('NASA',datasets)) & length(datasets)==1){
   p=p+ 
     labs(subtitle=paste(textNASA))+
     geom_line(aes(y=D$val-m_new,x=D$y),size=1,linetype="solid",color="black")+ 
     geom_point(aes(y=D$val-m_new,x=D$y),pch=16,size=4,color=D$col)+
     if (orig){geom_line(aes(y=D$val,x=D$y),size=1,linetype="solid",color="grey")} # relative to  original reference period
 }
+if (!is.na(match('NASA',datasets)) & length(datasets)>1){p=p+geom_line(aes(y=D$val-m_new,x=D$y),size=1.5,linetype="solid",color="pink")}
+
 
 # Copernicus
-if (!is.na(match('Copernicus',datasets)) & refs > D2$y[1]){
+if (!is.na(match('Copernicus',datasets)) & length(datasets)==1  & refs > D2$y[1]){
   p=p+
     labs(subtitle=paste(textCopernicus))+
     geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1,linetype="dashed",color="green")+ 
-    geom_point(aes(y=D2$val-m2_new,x=D2$y),pch=23,size=4,color="green",fill=D2$col)
+    geom_point(aes(y=D2$val-m2_new,x=D2$y),pch=16,size=4,color=D2$col)
     if (orig){geom_line(aes(y=D2$val,x=D2$y),size=1,linetype="solid",color="grey")} # relative to  original reference period
 }
 if (refs < D2$y[1]){p=p+labs(subtitle=paste(textCopernicus))}                       # print warning
+if (!is.na(match('Copernicus',datasets)) & length(datasets)>1){p=p+geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1.5,linetype="solid",color="orange")}
 
 # HadCRUT
-if (!is.na(match('HadCRUT',datasets))){
+if (!is.na(match('HadCRUT',datasets)) & length(datasets)==1){
   p=p+
     labs(subtitle=paste(textHadCRUT))+
     geom_line(aes(y=D3$val-m3_new,x=D3$y),size=1,linetype="solid",color="black")+
     geom_point(aes(y=D3$val-m3_new,x=D3$y),pch=16,size=4,color=D3$col)
     if (orig){geom_line(aes(y=D3$val,x=D3$y),size=1,linetype="solid",color="grey")} # relative to original reference period
 }
+if (!is.na(match('HadCRUT',datasets)) & length(datasets)>1){p=p+geom_line(aes(y=D3$val-m3_new,x=D3$y),size=1.5,linetype="solid",color="brown")}
 
 p=p+theme(
       axis.text.x=element_text(size=20,angle = 90,vjust=0.5)
@@ -120,12 +124,14 @@ p=p+theme(
     , panel.grid.major = element_blank() 
     , panel.grid.minor = element_blank() 
     , legend.background = element_rect(fill = "transparent") 
-    , legend.box.background = element_rect(fill = "transparent"))  
+    , legend.box.background = element_rect(fill = "transparent")
+    , plot.title = element_text(hjust = 0.5)
+    , plot.subtitle = element_text(hjust = 0.5))
+  
 
 p=p + scale_x_continuous(limits=c(year1-10,2020),breaks=seq(year1-10,2020,10))+
-      scale_y_discrete(limits=c(-0.5,0,0.5,1),expand = c(0.05,0.05))
+      scale_y_discrete(limits=c(-1,-0.5,0,0.5,1,1.5),expand = c(0.1,0.15))
 
 print(p)
 #ggsave(plot=p,file="plots/global_NASA_09032020.png", bg = "transparent",width = 11, height = 6) # save figure
-
 
