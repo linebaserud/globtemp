@@ -144,7 +144,7 @@ p=p+theme(
     , plot.subtitle = element_text(hjust = 0.5,size=14))
 
 p=p + scale_x_continuous(limits=c(y1-10,2020),breaks=seq(y1-10,2020,10))+
-      scale_y_discrete(limits=c(-1,-0.5,0,0.5,1,1.5),expand = c(0.1,0.15))
+      scale_y_discrete(limits=c(-1,-0.5,0,0.5,1),expand = c(0.1,0.15))
 
 print(p)
 #ggsave(plot=p,file="example_yearly.png", bg = "transparent",width = 11, height = 6) # save figure
