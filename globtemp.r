@@ -27,11 +27,11 @@ filenameCop <-"data/ts_1month_anomaly_Global_ea_2t_202001_v01.csv"
 filenameHadYearly <-"data/Hadcrut4_annual_09032020"
 filenameHadMonthly <-"data/Hadcrut4_06022020"
 
-datasets <- c('NASA','Copernicus','HadCRUT') # dataset(s) to plot, e.g. 'NASA', 'Copernicus', and/or 'HAdCRUT' 
+datasets <- c('NASA') # dataset(s) to plot, e.g. 'NASA', 'Copernicus', and/or 'HAdCRUT' 
 
-refs<-1981            # start reference period
-refe<-2010            # end reference period
-period <- 'January'    # type of data, e.g. 'Yearly', 'January', or 'February', ...
+refs<-1961            # start reference period
+refe<-1990            # end reference period
+period <- 'Yearly'    # type of data, e.g. 'Yearly', 'January', or 'February', ...
 
 orig<-F               # T/F plot data relative to original reference period
 
@@ -147,5 +147,5 @@ p=p + scale_x_continuous(limits=c(y1-10,2020),breaks=seq(y1-10,2020,10))+
       scale_y_discrete(limits=c(-1,-0.5,0,0.5,1,1.5),expand = c(0.1,0.15))
 
 print(p)
-#ggsave(plot=p,file="example_compare.png", bg = "transparent",width = 11, height = 6) # save figure
+#ggsave(plot=p,file="example_yearly.png", bg = "transparent",width = 11, height = 6) # save figure
 
