@@ -21,9 +21,10 @@ R package ggplot2
 * Datafiles: e.g. filenameNASA <- "data/GLB.Ts+dSST_Jan2020.csv"
 * Start and end of desired reference period: e.g. 
 refs<-1981 and refe<-2010
-* Type of data: e.g. 'Yearly', 'Jan', 'Feb',...
+* Type of data: e.g. 'Yearly', or 'January', or 'February',...
 * Option (True/False) to also plot data relative to original reference period: e.g. orig<-F
 
 ## Examples:
 ![test](/example_yearly.png)
+
 ![test](/example_compare.png)
