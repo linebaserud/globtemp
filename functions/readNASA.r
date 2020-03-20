@@ -3,18 +3,18 @@
 readNASA <- function(filename,period){
   Din <- read.table(file=filename,header=TRUE,skip=1,sep=",")
   
-  if (period=='Jan') {tmp_in=Din$Jan}
-  if (period=='Feb') {tmp_in=Din$Feb}
-  if (period=='Mar') {tmp_in=Din$Mar}
-  if (period=='Apr') {tmp_in=Din$Apr}
+  if (period=='January') {tmp_in=Din$Jan}
+  if (period=='February') {tmp_in=Din$Feb}
+  if (period=='March') {tmp_in=Din$Mar}
+  if (period=='April') {tmp_in=Din$Apr}
   if (period=='May') {tmp_in=Din$May}
-  if (period=='Jun') {tmp_in=Din$Jun}
-  if (period=='Jul') {tmp_in=Din$Jul}
-  if (period=='Aug') {tmp_in=Din$Aug}
-  if (period=='Sep') {tmp_in=Din$Sep}
-  if (period=='Oct') {tmp_in=Din$Oct}
-  if (period=='Nov') {tmp_in=Din$Nov}
-  if (period=='Dec') {tmp_in=Din$Dec}
+  if (period=='June') {tmp_in=Din$Jun}
+  if (period=='July') {tmp_in=Din$Jul}
+  if (period=='August') {tmp_in=Din$Aug}
+  if (period=='September') {tmp_in=Din$Sep}
+  if (period=='October') {tmp_in=Din$Oct}
+  if (period=='Noveber') {tmp_in=Din$Nov}
+  if (period=='December') {tmp_in=Din$Dec}
   if (period=='Yearly') {tmp_in=Din$J.D}
 
   D <- data.frame(y=Din$Year,val=tmp_in)

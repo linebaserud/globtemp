@@ -40,18 +40,18 @@ readHadCRUT <- function(filename,period){
     if (length(jan$glob)>length(nov$glob)){nov=rbind(nov,'NAN')}
     if (length(jan$glob)>length(dec$glob)){dec=rbind(dec,'NAN')}
 
-    if (period=='Jan') {Dout=data.frame(y=jan$y,val=jan$glob)}
-    if (period=='Feb') {Dout=data.frame(y=feb$y,val=feb$glob)}
-    if (period=='Mar') {Dout=data.frame(y=mar$y,val=mar$glob)}
-    if (period=='Apr') {Dout=data.frame(y=apr$y,val=apr$glob)}
+    if (period=='January') {Dout=data.frame(y=jan$y,val=jan$glob)}
+    if (period=='February') {Dout=data.frame(y=feb$y,val=feb$glob)}
+    if (period=='March') {Dout=data.frame(y=mar$y,val=mar$glob)}
+    if (period=='April') {Dout=data.frame(y=apr$y,val=apr$glob)}
     if (period=='May') {Dout=data.frame(y=may$y,val=may$glob)}
-    if (period=='Jun') {Dout=data.frame(y=jun$y,val=jun$glob)}
-    if (period=='Jul') {Dout=data.frame(y=jul$y,val=jul$glob)}
-    if (period=='Aug') {Dout=data.frame(y=aug$y,val=aug$glob)}
-    if (period=='Sep') {Dout=data.frame(y=sep$y,val=sep$glob)}
-    if (period=='Oct') {Dout=data.frame(y=oct$y,val=oct$glob)}
-    if (period=='Nov') {Dout=data.frame(y=nov$y,val=nov$glob)}
-    if (period=='Dec') {Dout=data.frame(y=dec$y,val=dec$glob)}
+    if (period=='June') {Dout=data.frame(y=jun$y,val=jun$glob)}
+    if (period=='July') {Dout=data.frame(y=jul$y,val=jul$glob)}
+    if (period=='August') {Dout=data.frame(y=aug$y,val=aug$glob)}
+    if (period=='September') {Dout=data.frame(y=sep$y,val=sep$glob)}
+    if (period=='October') {Dout=data.frame(y=oct$y,val=oct$glob)}
+    if (period=='November') {Dout=data.frame(y=nov$y,val=nov$glob)}
+    if (period=='December') {Dout=data.frame(y=dec$y,val=dec$glob)}
   }
 
   if (period=='Yearly'){

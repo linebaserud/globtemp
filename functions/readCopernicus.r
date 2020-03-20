@@ -37,18 +37,18 @@ readCopernicus <- function(filename,period){
     if (rr[ind]=="12"){dec=mnd}
   }
   if (period != 'Yearly'){
-    if (period == 'Jan'){D2 <- data.frame(y=jan$y,val=jan$glob)}
-    if (period == 'Feb'){D2 <- data.frame(y=feb$y,val=feb$glob)}
-    if (period == 'Mar'){D2 <- data.frame(y=mar$y,val=mar$glob)}
-    if (period == 'Apr'){D2 <- data.frame(y=apr$y,val=apr$glob)}
+    if (period == 'January'){D2 <- data.frame(y=jan$y,val=jan$glob)}
+    if (period == 'February'){D2 <- data.frame(y=feb$y,val=feb$glob)}
+    if (period == 'March'){D2 <- data.frame(y=mar$y,val=mar$glob)}
+    if (period == 'April'){D2 <- data.frame(y=apr$y,val=apr$glob)}
     if (period == 'May'){D2 <- data.frame(y=may$y,val=may$glob)}
-    if (period == 'Jun'){D2 <- data.frame(y=jun$y,val=jun$glob)}
-    if (period == 'Jul'){D2 <- data.frame(y=jul$y,val=jul$glob)}
-    if (period == 'Aug'){D2 <- data.frame(y=aug$y,val=aug$glob)}
-    if (period == 'Sep'){D2 <- data.frame(y=sep$y,val=sep$glob)}
-    if (period == 'Oct'){D2 <- data.frame(y=oct$y,val=oct$glob)}
-    if (period == 'Nov'){D2 <- data.frame(y=nov$y,val=nov$glob)}
-    if (period == 'Dec'){D2 <- data.frame(y=dec$y,val=dec$glob)}
+    if (period == 'June'){D2 <- data.frame(y=jun$y,val=jun$glob)}
+    if (period == 'July'){D2 <- data.frame(y=jul$y,val=jul$glob)}
+    if (period == 'August'){D2 <- data.frame(y=aug$y,val=aug$glob)}
+    if (period == 'September'){D2 <- data.frame(y=sep$y,val=sep$glob)}
+    if (period == 'October'){D2 <- data.frame(y=oct$y,val=oct$glob)}
+    if (period == 'November'){D2 <- data.frame(y=nov$y,val=nov$glob)}
+    if (period == 'December'){D2 <- data.frame(y=dec$y,val=dec$glob)}
   }
   if (period == 'Yearly'){
     D2y <- data.frame()
