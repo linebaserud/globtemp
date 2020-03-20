@@ -24,5 +24,6 @@ refs<-1981 and refe<-2010
 * Type of data: e.g. 'Yearly', 'Jan', 'Feb',...
 * Option (True/False) to also plot data relative to original reference period: e.g. orig<-F
 
-## Example:
-![test](/NASA_09032020.png)
+## Examples:
+![test](/example_yearly.png)
+![test](/example_compare.png)
