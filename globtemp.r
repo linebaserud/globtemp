@@ -90,8 +90,8 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
     p=p+ 
       labs(subtitle=paste(textNASA))+
       geom_line(aes(y=D$val-m_new,x=D$y),size=1,linetype="solid",color="black")+ 
-      geom_point(aes(y=D$val-m_new,x=D$y),pch=16,size=4,color=D$col)+
-      if (orig){geom_line(aes(y=D$val,x=D$y),size=1,linetype="solid",color="grey")} # relative to  original reference period
+      geom_point(aes(y=D$val-m_new,x=D$y),pch=16,size=4,color=D$col)
+      if (orig){p=p+geom_line(aes(y=D$val,x=D$y),size=1,linetype="solid",color="grey")} # relative to  original reference period
   }
   if (!is.na(match('NASA',datasets)) & length(datasets)>1){
     p=p+geom_line(aes(y=D$val-m_new,x=D$y),size=1.5,linetype="solid",color="orange")
@@ -104,7 +104,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
       labs(subtitle=paste(textCopernicus))+
       geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1,linetype="dashed",color="green")+ 
       geom_point(aes(y=D2$val-m2_new,x=D2$y),pch=16,size=4,color=D2$col)
-      if (orig){geom_line(aes(y=D2$val,x=D2$y),size=1,linetype="solid",color="grey")} # relative to  original reference period
+      if (orig){p=p+geom_line(aes(y=D2$val,x=D2$y),size=1,linetype="solid",color="grey")} # relative to  original reference period
       if (refs < D2$y[1]){p=p+labs(subtitle=paste(textCopernicus),color="red")}                       # print warning
   }
   if (!is.na(match('Copernicus',datasets)) & length(datasets)>1){
@@ -118,7 +118,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
       labs(subtitle=paste(textHadCRUT))+
       geom_line(aes(y=D3$val-m3_new,x=D3$y),size=1,linetype="solid",color="black")+
       geom_point(aes(y=D3$val-m3_new,x=D3$y),pch=16,size=4,color=D3$col)
-      if (orig){geom_line(aes(y=D3$val,x=D3$y),size=1,linetype="solid",color="grey")} # relative to original reference period
+      if (orig){p=p+geom_line(aes(y=D3$val,x=D3$y),size=1,linetype="solid",color="grey")} # relative to original reference period
   }
   if (!is.na(match('HadCRUT',datasets)) & length(datasets)>1){
     p=p+geom_line(aes(y=D3$val-m3_new,x=D3$y),size=1.5,linetype="solid",color="brown")
