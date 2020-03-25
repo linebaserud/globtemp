@@ -20,7 +20,7 @@ fun_list<-c("anom2anom.r",
             "readNASA.r")
 for (fun in fun_list){source(paste0("functions/",fun))}
 
-globtemp <- function(datasets,refs,refe,period,orig,saveopt){
+globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
 # user input -----------------------------------------------------------------------------
 
 filenameNASA <- "data/GLB.Ts+dSST_Jan2020.csv"
@@ -149,6 +149,6 @@ p=p + scale_x_continuous(limits=c(y1-10,2020),breaks=seq(y1-10,2020,10))+
       scale_y_discrete(limits=c(-1,-0.5,0,0.5,1),expand = c(0.1,0.15))
 
 print(p)
-#if (save_option){ggsave(plot=p,file=save_name, bg = "transparent",width = 11, height = 6)}
+if (save_option){ggsave(plot=p,file=save_name, bg = "transparent",width = 11, height = 6)}
 
 }
