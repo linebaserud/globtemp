@@ -1,5 +1,5 @@
 # globtemp
-Function for plotting global temperature anomalies relative to desired reference period.
+Function for plotting global temperature anomalies relative to desired reference period from [NASA/GISS](https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv), [Copernicus](https://climate.copernicus.eu/sites/default/files/2020-02/ts_12month_anomaly_Global_ea_2t_202001_v01.csv), [HadCRUT4 annual](https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.annual_ns_avg.txt), and/or [HadCRUT4 monthly](https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.monthly_ns_avg.txt).
 
 ## Prerequisites
 R package ggplot2
@@ -8,12 +8,6 @@ R package ggplot2
 * readCopernicus.r, readHadCRUT.r, and readNASA.r: functions for reading data from Copernicus/HadCRUT/NASA tables, respectively.
 * anom2anom.r: function for changing the reference period for timeseries of anomalies.
 * distrCol.r: function for distribution of colors blue/red/black for anomalies under/over/equal to desired reference period.
-
-## Data
-* [NASA/GISS](https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv)
-* [Copernicus](https://climate.copernicus.eu/sites/default/files/2020-02/ts_12month_anomaly_Global_ea_2t_202001_v01.csv)
-* [HadCRUT4 annual](https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.annual_ns_avg.txt)
-* [HadCRUT4 monthly](https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.monthly_ns_avg.txt)
 
 ## User input
 * Dataset(s) to plot: e.g. datasets <- c('NASA') for only NASA/GISS or datasets <- c('NASA','Copernicus') for comparing NASA/GISS and Copernicus values
