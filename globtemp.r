@@ -20,6 +20,7 @@ fun_list<-c("anom2anom.r",
             "readNASA.r")
 for (fun in fun_list){source(paste0("functions/",fun))}
 
+globtemp <- function(datasets,refs,refe,period,orig,saveopt){
 # user input -----------------------------------------------------------------------------
 
 filenameNASA <- "data/GLB.Ts+dSST_Jan2020.csv"
@@ -27,13 +28,13 @@ filenameCop <-"data/ts_1month_anomaly_Global_ea_2t_202001_v01.csv"
 filenameHadYearly <-"data/Hadcrut4_annual_09032020"
 filenameHadMonthly <-"data/Hadcrut4_06022020"
 
-datasets <- c('NASA') # dataset(s) to plot, e.g. 'NASA', 'Copernicus', and/or 'HAdCRUT' 
+#datasets <- c('NASA') # dataset(s) to plot, e.g. 'NASA', 'Copernicus', and/or 'HAdCRUT' 
 
-refs<-1961            # start reference period
-refe<-1990            # end reference period
-period <- 'Yearly'    # type of data, e.g. 'Yearly', 'January', or 'February', ...
+#refs<-1961            # start reference period
+#refe<-1990            # end reference period
+#period <- 'Yearly'    # type of data, e.g. 'Yearly', 'January', or 'February', ...
 
-orig<-F               # T/F plot data relative to original reference period
+#orig<-F               # T/F plot data relative to original reference period
 
 # get data ----------------------------------------------------------------------------------
 
@@ -105,17 +106,18 @@ if (!is.na(match('NASA',datasets)) & length(datasets)>1){
 }
 
 # Copernicus
-if (!is.na(match('Copernicus',datasets)) & length(datasets)==1  & refs > D2$y[1]){
+if (!is.na(match('Copernicus',datasets)) & length(datasets)==1){
   p=p+
     labs(subtitle=paste(textCopernicus))+
     geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1,linetype="dashed",color="green")+ 
     geom_point(aes(y=D2$val-m2_new,x=D2$y),pch=16,size=4,color=D2$col)
     if (orig){geom_line(aes(y=D2$val,x=D2$y),size=1,linetype="solid",color="grey")} # relative to  original reference period
+    if (refs < D2$y[1]){p=p+labs(subtitle=paste(textCopernicus),color="red")}                       # print warning
 }
-if (refs < D2$y[1]){p=p+labs(subtitle=paste(textCopernicus))}                       # print warning
 if (!is.na(match('Copernicus',datasets)) & length(datasets)>1){
   p=p+geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1.5,linetype="solid",color="red")
   p=p+annotate("text",x=y1+(2020-y1)/2-5,y=0.95,label="Copernicus",color="red",size=6)  
+  if (refs < D2$y[1]){p=p+labs(subtitle=paste(textCopernicus))+theme(plot.subtitle = element_text(color = "red"))}                       
 }
 
 # HadCRUT
@@ -147,5 +149,6 @@ p=p + scale_x_continuous(limits=c(y1-10,2020),breaks=seq(y1-10,2020,10))+
       scale_y_discrete(limits=c(-1,-0.5,0,0.5,1),expand = c(0.1,0.15))
 
 print(p)
-#ggsave(plot=p,file="example_yearly.png", bg = "transparent",width = 11, height = 6) # save figure
+#if (save_option){ggsave(plot=p,file=save_name, bg = "transparent",width = 11, height = 6)}
 
+}
