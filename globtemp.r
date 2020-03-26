@@ -102,7 +102,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
   if (!is.na(match('Copernicus',datasets)) & length(datasets)==1){
     p=p+
       labs(subtitle=paste(textCopernicus))+
-      geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1,linetype="dashed",color="green")+ 
+      geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1,linetype="solid",color="black")+ 
       geom_point(aes(y=D2$val-m2_new,x=D2$y),pch=16,size=4,color=D2$col)
       if (orig){p=p+geom_line(aes(y=D2$val,x=D2$y),size=1,linetype="solid",color="grey")} # relative to  original reference period
       if (refs < D2$y[1]){p=p+labs(subtitle=paste(textCopernicus),color="red")}                       # print warning
