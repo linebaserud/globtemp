@@ -39,10 +39,10 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
     refsNASA <- 1951
     refeNASA <- 1980
     y1NASA <- 1880
-    if (refsNASA == refs & refeNASA == refe){m_new <- 0} # if choosen ref period is equal to original in dataset
-    if (refsNASA != refs | refeNASA != refe){m_new <- anom2anom(D,refs,refe)} # else change ref period
+    if (refsNASA == refs & refeNASA == refe){m_new <- 0}                      # if ref period equal to original...
+    if (refsNASA != refs | refeNASA != refe){m_new <- anom2anom(D,refs,refe)} # ...else change ref period
     textNASA <- "NASA/GISS GHCN-v4 1880-12/2019 + SST: ERSST v5 1880-12/2019 (original reference period: 1951-1980)"
-    D <- cbind(D,distrCol(D,m_new)) # add colomn with colors for plotting
+    D <- cbind(D,distrCol(D,m_new))                                           # add colomn with colors for plotting
     y1 <- rbind(y1,y1NASA)
   }
 
@@ -53,7 +53,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
     refeCop <- 2010
     y1Cop <- 1979 
     textCopernicus <- "ERA5 Copernicus Climate Change Service/ECMWF (original reference period: 1981-2010)"
-    if (D2$y[1] > refs){textCopernicus <- "**Warning**: NO Copernicus data for choosen reference period"} # add before and do not plot
+    if (y1Cop > refs){textCopernicus <- "** WARNING **: Copernicus data does not cover entire reference period"} 
     colnames(D2) <- c("y", "val")
     if (refsCop == refs & refeCop == refe){m2_new <- 0}                       # if ref period equal to original...
     if (refsCop != refs | refeCop != refe){m2_new <- anom2anom(D2,refs,refe)} # ...else change ref period
@@ -91,7 +91,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
       labs(subtitle=paste(textNASA))+
       geom_line(aes(y=D$val-m_new,x=D$y),size=1,linetype="solid",color="black")+ 
       geom_point(aes(y=D$val-m_new,x=D$y),pch=16,size=4,color=D$col)
-      if (orig){p=p+geom_line(aes(y=D$val,x=D$y),size=1,linetype="solid",color="grey")} # relative to  original reference period
+    if (orig){p=p+geom_line(aes(y=D$val,x=D$y),size=1,linetype="solid",color="grey")}                              
   }
   if (!is.na(match('NASA',datasets)) & length(datasets)>1){
     p=p+geom_line(aes(y=D$val-m_new,x=D$y),size=1.5,linetype="solid",color="orange")
@@ -100,17 +100,20 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
 
   # Copernicus
   if (!is.na(match('Copernicus',datasets)) & length(datasets)==1){
-    p=p+
-      labs(subtitle=paste(textCopernicus))+
-      geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1,linetype="solid",color="black")+ 
-      geom_point(aes(y=D2$val-m2_new,x=D2$y),pch=16,size=4,color=D2$col)
-      if (orig){p=p+geom_line(aes(y=D2$val,x=D2$y),size=1,linetype="solid",color="grey")} # relative to  original reference period
-      if (refs < D2$y[1]){p=p+labs(subtitle=paste(textCopernicus),color="red")}                       # print warning
+    if (refs > y1Cop){
+      p=p+
+        labs(subtitle=paste(textCopernicus))+
+        geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1,linetype="solid",color="black")+ 
+        geom_point(aes(y=D2$val-m2_new,x=D2$y),pch=16,size=4,color=D2$col)
+    }
+    if (orig){p=p+geom_line(aes(y=D2$val,x=D2$y),size=1,linetype="solid",color="grey")}                            
+    if (refs < y1Cop){p=p+labs(subtitle=paste(textCopernicus))+theme(plot.subtitle = element_text(color = "red"))} 
   }
   if (!is.na(match('Copernicus',datasets)) & length(datasets)>1){
-    p=p+geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1.5,linetype="solid",color="red")
     p=p+annotate("text",x=y1+(2020-y1)/2-5,y=0.95,label="Copernicus",color="red",size=6)  
-    if (refs < D2$y[1]){p=p+labs(subtitle=paste(textCopernicus))+theme(plot.subtitle = element_text(color = "red"))}                        }
+    if (refs > y1Cop){p=p+geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1.5,linetype="solid",color="red")}  
+    if (refs < y1Cop){p=p+labs(subtitle=paste(textCopernicus))+theme(plot.subtitle = element_text(color = "red"))}  
+  }
 
   # HadCRUT
   if (!is.na(match('HadCRUT',datasets)) & length(datasets)==1){
@@ -118,7 +121,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
       labs(subtitle=paste(textHadCRUT))+
       geom_line(aes(y=D3$val-m3_new,x=D3$y),size=1,linetype="solid",color="black")+
       geom_point(aes(y=D3$val-m3_new,x=D3$y),pch=16,size=4,color=D3$col)
-      if (orig){p=p+geom_line(aes(y=D3$val,x=D3$y),size=1,linetype="solid",color="grey")} # relative to original reference period
+    if (orig){p=p+geom_line(aes(y=D3$val,x=D3$y),size=1,linetype="solid",color="grey")}                               
   }
   if (!is.na(match('HadCRUT',datasets)) & length(datasets)>1){
     p=p+geom_line(aes(y=D3$val-m3_new,x=D3$y),size=1.5,linetype="solid",color="brown")
@@ -138,7 +141,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
     , plot.subtitle = element_text(hjust = 0.5,size=14))
 
   p=p + scale_x_continuous(limits=c(y1-10,2020),breaks=seq(y1-10,2020,10))+
-        scale_y_discrete(limits=c(-1,-0.5,0,0.5,1),expand = c(0.1,0.15))
+        scale_y_continuous(limits=c(-1,1),breaks=seq(-1,1,0.5)) 
 
   print(p)
   if (save_option){ggsave(plot=p,file=save_name, bg = "transparent",width = 11, height = 6)}
