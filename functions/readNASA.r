@@ -1,8 +1,11 @@
 # read NASA
 
 readNASA <- function(filename,period){
-  Din <- read.table(file=filename,header=TRUE,skip=1,sep=",")
-  
+  print(filename) 
+  # read from file or web
+  if(!is.na(filename)){Din <- read.table(file=filename,header=TRUE,skip=1,sep=",")}
+  if(is.na(filename)){Din <- read.csv(url("https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv"),header=TRUE,skip=1,sep=",")}
+
   if (period=='January') {tmp_in=Din$Jan}
   if (period=='February') {tmp_in=Din$Feb}
   if (period=='March') {tmp_in=Din$Mar}

@@ -10,7 +10,9 @@
 
 readCopernicus <- function(filename,period){
 
-  Din <- read.table(file=filename,header=TRUE,skip=2,sep=",") 
+  # read from file or web
+  if(!is.na(filename)){Din <- read.table(file=filename,header=TRUE,skip=2,sep=",")}
+  if(is.na(filename)){Din <- read.csv(url("https://climate.copernicus.eu/sites/default/files/2020-02/ts_1month_anomaly_Global_ea_2t_202001_v01.csv"),header=TRUE,skip=2,sep=",")}
 
   rr=c("01","02","03","04","05","06","07","08","09","10","11","12")
 
