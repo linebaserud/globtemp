@@ -4,7 +4,7 @@ Function for plotting global temperature anomalies from [NASA/GISS](https://data
 ## Prerequisites
 R package ggplot2
 
-## Functions included in globtemp
+## Included functions
 * readCopernicus.r, readHadCRUT.r, and readNASA.r: functions for reading data from Copernicus/HadCRUT/NASA tables, respectively.
 * anom2anom.r: function for changing the reference period for timeseries of anomalies.
 * distrCol.r: function for distribution of colors blue/red/black for anomalies under/over/equal to desired reference period.
