@@ -13,8 +13,8 @@ R package ggplot2
 * Dataset(s) to plot: e.g. datasets <- c('NASA') for only NASA/GISS or datasets <- c('NASA','Copernicus') for comparing NASA/GISS and Copernicus values
 * Start and end of desired reference period: e.g. refs<-1981 and refe<-2010
 * Period: e.g. 'Yearly', or 'January', or 'February',...
-* Option (True/False) to also plot data relative to original reference period: e.g. orig<-F
-* Option (True/False) to save .png
+* Option (TRUE/FALSE) to also plot data relative to original reference period: e.g. orig<-F
+* Option (TRUE/FALSE) to save .png
 
 * Datafiles (change? see issue 7)
 
