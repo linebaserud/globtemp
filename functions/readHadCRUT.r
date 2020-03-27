@@ -1,9 +1,12 @@
 # read hadcrut
 
 readHadCRUT <- function(filename,period){
-  
-  Din <- read.table(file=filename)
-  
+
+  # read from file or url
+  if(!is.na(filename)){Din <- read.table(file=filename)}
+  if(is.na(filename) & period == 'Yearly'){Din <- read.table(url("https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.annual_ns_avg.txt"),header=FALSE)}
+  if(is.na(filename) & period != 'Yearly'){Din <- read.table(url("https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.monthly_ns_avg.txt"),header=FALSE)}
+
   if (period!='Yearly'){
     rr=c("01","02","03","04","05","06","07","08","09","10","11","12")
     for (ind in 1:length(rr)){

@@ -28,8 +28,8 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
 
   filenameNASA <- NA  #"data/GLB.Ts+dSST_Jan2020.csv"
   filenameCop <- NA   #"data/ts_1month_anomaly_Global_ea_2t_202001_v01.csv"
-  filenameHadYearly <-"data/Hadcrut4_annual_09032020"
-  filenameHadMonthly <-"data/Hadcrut4_06022020"
+  filenameHadYearly <- NA   #"data/Hadcrut4_annual_09032020"
+  filenameHadMonthly <- NA  #"data/Hadcrut4_06022020"
 
   y1 <- data.frame()
   max_all <- data.frame()
