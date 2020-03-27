@@ -33,6 +33,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
 
   y1 <- data.frame()
   max_all <- data.frame()
+  min_all <- data.frame()
 
   # NASA/GISS
   if (!is.na(match('NASA',datasets))){
@@ -46,6 +47,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
     D <- cbind(D,distrCol(D,m_new))                                           # add colomn with colors for plotting
     y1 <- rbind(y1,y1NASA)
     max_all <- rbind(max_all,max(D$val-m_new,na.rm=T))
+    min_all <- rbind(min_all,min(D$val-m_new,na.rm=T))
   }
 
   # Copernicus
@@ -61,7 +63,8 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
     if (refsCop != refs | refeCop != refe){m2_new <- anom2anom(D2,refs,refe)} # ...else change ref period
     D2 <- cbind(D2,distrCol(D2,m2_new))                                       # add colomn with colors for plotting
     y1 <- rbind(y1,y1Cop)
-    max_all <- rbind(max_all,max(D2$val-m2_new,na.rm=T)) # do this for all!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    max_all <- rbind(max_all,max(D2$val-m2_new,na.rm=T)) 
+    min_all <- rbind(min_all,min(D2$val-m2_new,na.rm=T)) 
   }
 
   # HadCRUT4
@@ -76,11 +79,13 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
     if (refsHad != refs | refeHad != refe){m3_new <- anom2anom(D3,refs,refe)} # ...else change ref period
     D3 <- cbind(D3,distrCol(D3,m3_new))                                       # add colomn with colors for plotting
     y1 <- rbind(y1,y1Had)
-    max_all <- rbind(max_all,max(D3$val-m2_new,na.rm=T))
+    max_all <- rbind(max_all,max(D3$val-m3_new,na.rm=T))
+    min_all <- rbind(min_all,min(D3$val-m3_new,na.rm=T))
   }  
 
-  y1 <- min(y1) # scaling for x-axis
-  max_all <- max(max_all) # scaling for y-axis
+  y1 <- min(y1)            # adaptive scaling x-axis
+  max_all <- max(max_all)  # adaptive scaling y-axis max
+  min_all <- min(min_all)  # adaptive scaling y-axis min
 
   # plot data ----------------------------------------------------------------------------------
 
@@ -145,10 +150,8 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
     , plot.title = element_text(hjust = 0.5,size=18)
     , plot.subtitle = element_text(hjust = 0.5,size=14))
 
-  print(max_all)
-  p=p + scale_x_continuous(limits=c(y1-10,2020),breaks=seq(y1-10,2020,10))
-  if (max_all < 1)  {p=p+  scale_y_continuous(limits=c(-1,1),breaks=seq(-1,1,0.5))}
-  if (max_all >= 1) {p=p+  scale_y_continuous(limits=c(-1,1.5),breaks=seq(-1,1.5,0.5))}
+  p=p+scale_x_continuous(limits=c(y1-10,2020),breaks=seq(y1-10,2020,10))
+  p=p+scale_y_continuous(limits=c(floor(min_all/0.5)*0.5,ceiling(max_all/0.5)*0.5),breaks=seq(floor(min_all/0.5)*0.5,ceiling(max_all/0.5)*0.5,0.5))
 
   print(p)
   if (save_option){ggsave(plot=p,file=save_name, bg = "transparent",width = 11, height = 6)}
