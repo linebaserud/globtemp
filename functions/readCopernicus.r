@@ -10,12 +10,19 @@
 
 readCopernicus <- function(filename,period){
 
-  # read from file or web
+  # read from file
   if(!is.na(filename)){Din <- read.table(file=filename,header=TRUE,skip=2,sep=",")}
-  if(is.na(filename)){Din <- read.csv(url("https://climate.copernicus.eu/sites/default/files/2020-02/ts_1month_anomaly_Global_ea_2t_202001_v01.csv"),header=TRUE,skip=2,sep=",")}
+
+  # find newest data from web
+  if(is.na(filename)){ 
+    Din <- try(read.csv(url(paste0("https://climate.copernicus.eu/sites/default/files/",format(Sys.Date(),"%Y-%m"),"/ts_1month_anomaly_Global_ERA5_2T_",format(as.Date(floor_date(Sys.Date(),"month")-months(1)),"%Y%m"),"_v01.csv")),header=TRUE,skip=8,sep=","))
+    if (class(Din) == "try-error") {
+      print("Data not available for previous month, trying the one before")
+      Din <- read.csv(url(paste0("https://climate.copernicus.eu/sites/default/files/",format(as.Date(floor_date(Sys.Date(),"month")-months(1)),"%Y-%m"),"/ts_1month_anomaly_Global_ERA5_2T_",format(as.Date(floor_date(Sys.Date(),"month")-months(2)),"%Y%m"),"_v01.csv")),header=TRUE,skip=8,sep=",")
+    }
+  }
 
   rr=c("01","02","03","04","05","06","07","08","09","10","11","12")
-
   for (ind in 1:length(rr)){
     mnd=data.frame()
     for (n in 1:length(Din$Month)){

@@ -25,7 +25,8 @@ for (fun in fun_list){source(paste0("functions/",fun))}
 globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
 
   # get data ----------------------------------------------------------------------------------
-
+  
+  # filename=NA -> read from url...option in function to give liste of files, or say data=url
   filenameNASA <- NA  #"data/GLB.Ts+dSST_Jan2020.csv"
   filenameCop <- NA   #"data/ts_1month_anomaly_Global_ea_2t_202001_v01.csv"
   filenameHadYearly <- NA   #"data/Hadcrut4_annual_09032020"
@@ -44,7 +45,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
     if (refsNASA == refs & refeNASA == refe){m_new <- 0}                      # if ref period equal to original...
     if (refsNASA != refs | refeNASA != refe){m_new <- anom2anom(D,refs,refe)} # ...else change ref period
     textNASA <- "NASA/GISS GHCN-v4 1880-12/2019 + SST: ERSST v5 1880-12/2019 (original reference period: 1951-1980)"
-    D <- cbind(D,distrCol(D,m_new))                                           # add colomn with colors for plotting
+    D <- cbind(D,distrCol(D,m_new))                                           # add column with colors for plotting
     y1 <- rbind(y1,y1NASA)
     max_all <- rbind(max_all,max(D$val-m_new,na.rm=T))
     min_all <- rbind(min_all,min(D$val-m_new,na.rm=T))
@@ -61,7 +62,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
     colnames(D2) <- c("y", "val")
     if (refsCop == refs & refeCop == refe){m2_new <- 0}                       # if ref period equal to original...
     if (refsCop != refs | refeCop != refe){m2_new <- anom2anom(D2,refs,refe)} # ...else change ref period
-    D2 <- cbind(D2,distrCol(D2,m2_new))                                       # add colomn with colors for plotting
+    D2 <- cbind(D2,distrCol(D2,m2_new))                                       # add column with colors for plotting
     y1 <- rbind(y1,y1Cop)
     max_all <- rbind(max_all,max(D2$val-m2_new,na.rm=T)) 
     min_all <- rbind(min_all,min(D2$val-m2_new,na.rm=T)) 
@@ -77,7 +78,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
     textHadCRUT <- "HadCRUT4: CRUTEM4 surface air temperature + HadSST3 sea-surface temperature (original reference period: 1961-1990)"
     if (refsHad == refs & refeHad == refe){m3_new <- 0}                       # if chosen ref period equal to original...
     if (refsHad != refs | refeHad != refe){m3_new <- anom2anom(D3,refs,refe)} # ...else change ref period
-    D3 <- cbind(D3,distrCol(D3,m3_new))                                       # add colomn with colors for plotting
+    D3 <- cbind(D3,distrCol(D3,m3_new))                                       # add column with colors for plotting
     y1 <- rbind(y1,y1Had)
     max_all <- rbind(max_all,max(D3$val-m3_new,na.rm=T))
     min_all <- rbind(min_all,min(D3$val-m3_new,na.rm=T))
