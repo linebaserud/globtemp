@@ -1,5 +1,5 @@
 # -----------------------------------------------
-# function: distrCol
+# function: distr_col
 # description: distributes colors red (above), blue (below), black (equal) relative to normal
 #
 # input: data frame with values (optional: anomaly shift)
@@ -10,7 +10,7 @@
 #
 # -----------------------------------------------
 
-distrCol <- function(data,anomaly_shift=NA){
+distr_col <- function(data,anomaly_shift=NA){
   if (!is.na(anomaly_shift)){data$val <- data$val-anomaly_shift}
   vcol=data.frame()
   for (n in 1:length(data$val)){

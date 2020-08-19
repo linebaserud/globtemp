@@ -8,17 +8,23 @@
 
 # ----------------------------------------------------------------------------------------------------
 
+library('lubridate')
+
 readCopernicus <- function(filename,period){
 
   # read from file
   if(!is.na(filename)){Din <- read.table(file=filename,header=TRUE,skip=2,sep=",")}
 
   # find newest data from web
-  if(is.na(filename)){ 
-    Din <- try(read.csv(url(paste0("https://climate.copernicus.eu/sites/default/files/",format(Sys.Date(),"%Y-%m"),"/ts_1month_anomaly_Global_ERA5_2T_",format(as.Date(floor_date(Sys.Date(),"month")-months(1)),"%Y%m"),"_v01.csv")),header=TRUE,skip=8,sep=","))
+  if(is.na(filename)){
+    file_url = paste0("https://climate.copernicus.eu/sites/default/files/",format(Sys.Date(),"%Y-%m"),"/ts_1month_anomaly_Global_ERA5_2T_",format(as.Date(floor_date(Sys.Date(),"month")-months(1)),"%Y%m"),"_v01.csv") 
+    Din <- try(read.csv(url(file_url),header=TRUE,skip=8,sep=","))
+    print(paste("Reading Copernicus ERA5 data from:",file_url))
     if (class(Din) == "try-error") {
-      print("Data not available for previous month, trying the one before")
-      Din <- read.csv(url(paste0("https://climate.copernicus.eu/sites/default/files/",format(as.Date(floor_date(Sys.Date(),"month")-months(1)),"%Y-%m"),"/ts_1month_anomaly_Global_ERA5_2T_",format(as.Date(floor_date(Sys.Date(),"month")-months(2)),"%Y%m"),"_v01.csv")),header=TRUE,skip=8,sep=",")
+      print("Data not available for previous month, trying the one before...")
+      file_url = paste0("https://climate.copernicus.eu/sites/default/files/",format(as.Date(floor_date(Sys.Date(),"month")-months(1)),"%Y-%m"),"/ts_1month_anomaly_Global_ERA5_2T_",format(as.Date(floor_date(Sys.Date(),"month")-months(2)),"%Y%m"),"_v01.csv")
+      Din <- read.csv(url(file_url),header=TRUE,skip=8,sep=",")
+      print(paste("Reading Copernicus ERA5 data from:",file_url))
     }
   }
 
