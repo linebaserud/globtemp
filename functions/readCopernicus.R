@@ -68,7 +68,7 @@ readCopernicus <- function(filename,period){
   if (period == 'Yearly'){
     D2y <- data.frame()
     for (ix in 1:length(jan[,3])){
-      tmp_D2y <- sum(jan[ix,2],feb[ix,2],mar[ix,2],apr[ix,2],may[ix,2],jun[ix,2],jul[ix,2],aug[ix,2],sep[ix,2],oct[ix,2],nov[ix,2],dec[ix,2])
+      tmp_D2y <- sum(jan[ix,2],feb[ix,2],mar[ix,2],apr[ix,2],may[ix,2],jun[ix,2],jul[ix,2],aug[ix,2],sep[ix,2],oct[ix,2],nov[ix,2],dec[ix,2],na.rm=TRUE)
       D2y <- rbind(D2y,tmp_D2y)
     }
     D2<-data.frame(y=jan[,3],val=D2y/12)

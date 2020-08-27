@@ -7,10 +7,15 @@ readHadCRUT <- function(filename,period){
   if(is.na(filename) & period == 'Yearly'){
     Din <- read.table(url("https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.annual_ns_avg.txt"),header=FALSE)
     print("Reading HadCRUT4 data from: https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.annual_ns_avg.txt")
+
+   # check_last_Had <- read.table(url("https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.monthly_ns_avg.txt"),header=FALSE)
+   # last_Had <- as.character(tail(check_last_Had$V1, n = 1))
+   # rm(check_last_Had)
   }
   if(is.na(filename) & period != 'Yearly'){
     Din <- read.table(url("https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.monthly_ns_avg.txt"),header=FALSE)
     print("Reading HadCRUT4 data from https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.monthly_ns_avg.txt")
+    #last_Had <- as.character(tail(Din$V1, n = 1))
   }
 
   if (period!='Yearly'){
@@ -62,10 +67,18 @@ readHadCRUT <- function(filename,period){
     if (period=='October') {Dout=data.frame(y=oct$y,val=oct$glob)}
     if (period=='November') {Dout=data.frame(y=nov$y,val=nov$glob)}
     if (period=='December') {Dout=data.frame(y=dec$y,val=dec$glob)}
+
+    #last_Had <- as.character(tail(Dout$y, n = 1))
+   # last_Had=tail(Dout$y[!is.na(Dout$y)],1)
+   # print(last_Had)
   }
+  check_last_Had <- read.table(url("https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.monthly_ns_avg.txt"),header=FALSE)
+  last_Had <- as.character(tail(check_last_Had$V1, n = 1))
+  rm(check_last_Had)
+
 
   if (period=='Yearly'){
     Dout=data.frame(y=Din$V1,val=Din$V2)
   }
-  return(Dout)
+  return(list(Dout,last_Had))
 }

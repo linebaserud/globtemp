@@ -27,12 +27,31 @@ readNASA <- function(filename,period){
   tmp1<-as.numeric(as.character(D$val[which(D$val!="***")]))
   tmp2<-D$y[which(D$val!="***")]
  
-   D <-data.frame(y=tmp2,val=tmp1) # Remove missing values "***"
   
 
+  D <-data.frame(y=tmp2,val=tmp1) # Remove missing values "***"
+ 
+  if (period =='Yearly'){ 
+    for (i in (1:length(tmp_in))){
+      if (tmp_in[i]=="***"){
+        ly=Din[i,1]
+        ysf=Din[i,which(Din[i,2:13]!="***")+1]
+        ysf_mean =round(sum(ysf)/length(ysf),2)
+        print(paste0("Calculating ",ly," ",period," value ..."))
+     
+      if (nchar(as.character(length(ysf)))>1){lm=as.character(length(ysf))} 
+      else {lm=paste0("0",as.character(length(ysf)))}
+      
+      }
+    }
+  D=rbind(D,data.frame(y=ly,val=ysf_mean))
+  } else {
+      ly=NA
+      lm=NA
+  }
 
 
-  return(D)
+  return(list(D,last_NASA=paste0(ly,"/",lm)))
 }
 
 

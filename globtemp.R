@@ -9,7 +9,7 @@
 
 # load libraries and functions ----------------------------------------------------------------
 
-rm(list=ls())
+rm(list = ls())
 
 library("ggplot2")
 
@@ -18,11 +18,11 @@ fun_list<-c("anom2anom.R",
             "readCopernicus.R",
             "readHadCRUT.R",
             "readNASA.R")
-for (fun in fun_list){source(paste0("functions/",fun))}
+for (fun in fun_list) {source(paste0("functions/", fun))}
 
 # main function -------------------------------------------------------------------------------
 
-globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
+globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name){
 
   # get data ----------------------------------------------------------------------------------
   
@@ -36,51 +36,63 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
   min_all <- data.frame()
 
   # NASA/GISS
-  if (!is.na(match('NASA',datasets))){
-    D <- readNASA(filenameNASA,period) 
+  if (!is.na(match('NASA', datasets))) {
+    out <- readNASA(filenameNASA, period) 
+    D=out[[1]]
     refsNASA <- 1951
     refeNASA <- 1980
     y1NASA <- 1880
-    if (refsNASA == refs & refeNASA == refe){m_new <- 0}                      # if ref period equal to original...
-    if (refsNASA != refs | refeNASA != refe){m_new <- anom2anom(D,refs,refe)} # ...else change ref period
+    if (refsNASA == refs & refeNASA == refe) {m_new <- 0}                      # if ref period equal to original...
+    if (refsNASA != refs | refeNASA != refe) {m_new <- anom2anom(D,refs,refe)} # ...else change ref period
     textNASA <- "NASA/GISS GHCN-v4 1880-12/2019 + SST: ERSST v5 1880-12/2019 (original reference period: 1951-1980)"
-    D <- cbind(D,distr_col(D,m_new))                                           # add column with colors for plotting
-    y1 <- rbind(y1,y1NASA)
-    max_all <- rbind(max_all,max(D$val-m_new,na.rm=T))
-    min_all <- rbind(min_all,min(D$val-m_new,na.rm=T))
+    D <- cbind(D, distr_col(D, m_new))                                           # add column with colors for plotting
+    y1 <- rbind(y1, y1NASA)
+    max_all <- rbind(max_all, max(D$val - m_new, na.rm = TRUE))
+    min_all <- rbind(min_all, min(D$val - m_new, na.rm = TRUE))
+    print(tail(D$val))
+    print(tail(D$val - m_new))
+    print(tail(D$y))
   }
 
   # Copernicus
-  if (!is.na(match('Copernicus',datasets))){
-    D2 <- readCopernicus(filenameCop,period)
+  if (!is.na(match('Copernicus', datasets))) {
+    D2 <- readCopernicus(filenameCop, period)
     refsCop <- 1981
     refeCop <- 2010
     y1Cop <- 1979 
+    yeCop <- D2$y[]
     textCopernicus <- "ERA5 Copernicus Climate Change Service/ECMWF (original reference period: 1981-2010)"
-    if (y1Cop > refs){textCopernicus <- "** WARNING **: Copernicus data does not cover entire reference period"} 
+    if (y1Cop > refs) {textCopernicus <- "** WARNING **: Copernicus data does not cover entire reference period"} 
     colnames(D2) <- c("y", "val")
     if (refsCop == refs & refeCop == refe){m2_new <- 0}                       # if ref period equal to original...
-    if (refsCop != refs | refeCop != refe){m2_new <- anom2anom(D2,refs,refe)} # ...else change ref period
-    D2 <- cbind(D2,distr_col(D2,m2_new))                                       # add column with colors for plotting
-    y1 <- rbind(y1,y1Cop)
-    max_all <- rbind(max_all,max(D2$val-m2_new,na.rm=T)) 
-    min_all <- rbind(min_all,min(D2$val-m2_new,na.rm=T)) 
+    if (refsCop != refs | refeCop != refe){m2_new <- anom2anom(D2, refs, refe)} # ...else change ref period
+    D2 <- cbind(D2, distr_col(D2, m2_new))                                       # add column with colors for plotting
+    y1 <- rbind(y1, y1Cop)
+    max_all <- rbind(max_all, max(D2$val - m2_new, na.rm = TRUE)) 
+    min_all <- rbind(min_all, min(D2$val - m2_new, na.rm = TRUE)) 
+    print(tail(D2$val))
+    print(tail(D2$val - m2_new))
+    print(tail(D2$y))
   }
 
   # HadCRUT4
   if (!is.na(match('HadCRUT',datasets))){
-    if (period != 'Yearly'){D3 <- readHadCRUT(filenameHadMonthly,period)}
-    if (period == 'Yearly'){D3 <- readHadCRUT(filenameHadYearly,period)}
+    if (period != 'Yearly') {out3 <- readHadCRUT(filenameHadMonthly, period)}
+    if (period == 'Yearly') {out3 <- readHadCRUT(filenameHadYearly, period)}
+    D3=out3[[1]]; 
     refsHad <- 1961
     refeHad <- 1990
     y1Had <- 1850
     textHadCRUT <- "HadCRUT4: CRUTEM4 surface air temperature + HadSST3 sea-surface temperature (original reference period: 1961-1990)"
-    if (refsHad == refs & refeHad == refe){m3_new <- 0}                       # if chosen ref period equal to original...
-    if (refsHad != refs | refeHad != refe){m3_new <- anom2anom(D3,refs,refe)} # ...else change ref period
-    D3 <- cbind(D3,distr_col(D3,m3_new))                                       # add column with colors for plotting
-    y1 <- rbind(y1,y1Had)
-    max_all <- rbind(max_all,max(D3$val-m3_new,na.rm=T))
-    min_all <- rbind(min_all,min(D3$val-m3_new,na.rm=T))
+    if (refsHad == refs & refeHad == refe) {m3_new <- 0}                       # if chosen ref period equal to original...
+    if (refsHad != refs | refeHad != refe) {m3_new <- anom2anom(D3, refs, refe)} # ...else change ref period
+    D3 <- cbind(D3, distr_col(D3, m3_new))                                       # add column with colors for plotting
+    y1 <- rbind(y1, y1Had)
+    max_all <- rbind(max_all, max(D3$val - m3_new, na.rm = TRUE))
+    min_all <- rbind(min_all, min(D3$val - m3_new, na.rm = TRUE))
+    print(tail(D3$val))
+    print(tail(D3$val - m3_new))
+    print(tail(D3$y))
   }  
 
   y1 <- min(y1)            # adaptive scaling x-axis
@@ -89,14 +101,14 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
 
   # plot data ----------------------------------------------------------------------------------
 
-  p=ggplot()+
-    xlab("")+
-    ylab("")+
-    geom_hline(yintercept=0,color="black")+
-    labs(title=paste(period, "temperature anomalies (°C)  relative to",refs,"-",refe))
+  p <- ggplot() +
+       xlab("") +
+       ylab("") +
+       geom_hline(yintercept = 0, color = "black") +
+       labs(title = paste(period, "temperature anomalies (°C)  relative to", refs, "-", refe))
 
   # NASA
-  if (!is.na(match('NASA',datasets)) & length(datasets)==1){
+  if (!is.na(match('NASA', datasets)) & length(datasets) == 1) {
     p=p+ 
       labs(subtitle=paste(textNASA))+
       geom_line(aes(y=D$val-m_new,x=D$y),size=1,linetype="solid",color="black")+ 
@@ -106,6 +118,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
   if (!is.na(match('NASA',datasets)) & length(datasets)>1){
     p=p+geom_line(aes(y=D$val-m_new,x=D$y),size=1.5,linetype="solid",color="orange")
     p=p+annotate("text",x=y1+(2020-y1)/2-35,y=0.95,label="NASA/GISS",color="orange",size=6)  
+    p=p+annotate("text",x=y1+(2020-y1)/2-35,y=0.85,label=paste0("(",out[2],")"),color="orange",size=4)  
   }
 
   # Copernicus
@@ -136,6 +149,7 @@ globtemp <- function(datasets,refs,refe,period,orig,save_option,save_name){
   if (!is.na(match('HadCRUT',datasets)) & length(datasets)>1){
     p=p+geom_line(aes(y=D3$val-m3_new,x=D3$y),size=1.5,linetype="solid",color="brown",na.rm=TRUE)
     p=p+annotate("text",x=y1+(2020-y1)/2+25,y=0.95,label="HadCRUT4",color="brown",size=6)  
+    p=p+annotate("text",x=y1+(2020-y1)/2+25,y=0.85,label=paste0("(",out3[2],")"),color="brown",size=4)  
   }
   p=p+theme(
       axis.text.x=element_text(size=20,angle = 90,vjust=0.5)
