@@ -11,6 +11,7 @@
 
 rm(list = ls())
 
+library('lubridate')
 library("ggplot2")
 
 fun_list<-c("anom2anom.R",
@@ -129,7 +130,7 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
     }
     if (orig){p=p+geom_line(aes(y=D2$val,x=D2$y),size=1,linetype="solid",color="grey")}                            
     if (refs < y1Cop){p=p+labs(subtitle=paste(textCopernicus))+theme(plot.subtitle = element_text(color = "red"))} 
-  print(paste0("---- ",period, " top 5 Copernicus ----\n "))
+  cat(paste0("---- ",period, " top 5 Copernicus ----\n "))
   cat(paste0(c(1:5),": ",rev(tail(D2$val[order(D2$val)],n=5)), " (", rev(tail(D2$y[order(D2$val)],n=5)),")\n"))
   }
   if (!is.na(match('Copernicus',datasets)) & length(datasets)>1){
@@ -137,7 +138,7 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
     p=p+annotate("text",x=y1+(2020-y1)/2-5,y=0.85,label=paste0("(data until ",out2[2],")"),color="red",size=4)  
     if (refs > y1Cop){p=p+geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1.5,linetype="solid",color="red",na.rm=TRUE)}  
     if (refs < y1Cop){p=p+labs(subtitle=paste(textCopernicus))+theme(plot.subtitle = element_text(color = "red"))}  
-  print(paste0("---- ",period, " top 5 Copernicus ----\n "))
+  cat(paste0("---- ",period, " top 5 Copernicus ----\n "))
   cat(paste0(c(1:5),": ",rev(tail(D2$val[order(D2$val)],n=5)), " (", rev(tail(D2$y[order(D2$val)],n=5)),")\n"))
   }
 
