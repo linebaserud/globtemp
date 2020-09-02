@@ -49,14 +49,12 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
     y1 <- rbind(y1, y1NASA)
     max_all <- rbind(max_all, max(D$val - m_new, na.rm = TRUE))
     min_all <- rbind(min_all, min(D$val - m_new, na.rm = TRUE))
-    print(tail(D$val))
-    print(tail(D$val - m_new))
-    print(tail(D$y))
   }
 
   # Copernicus
   if (!is.na(match('Copernicus', datasets))) {
-    D2 <- readCopernicus(filenameCop, period)
+    out2 <- readCopernicus(filenameCop, period)
+    D2 <- out2[[1]]
     refsCop <- 1981
     refeCop <- 2010
     y1Cop <- 1979 
@@ -70,9 +68,6 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
     y1 <- rbind(y1, y1Cop)
     max_all <- rbind(max_all, max(D2$val - m2_new, na.rm = TRUE)) 
     min_all <- rbind(min_all, min(D2$val - m2_new, na.rm = TRUE)) 
-    print(tail(D2$val))
-    print(tail(D2$val - m2_new))
-    print(tail(D2$y))
   }
 
   # HadCRUT4
@@ -90,9 +85,6 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
     y1 <- rbind(y1, y1Had)
     max_all <- rbind(max_all, max(D3$val - m3_new, na.rm = TRUE))
     min_all <- rbind(min_all, min(D3$val - m3_new, na.rm = TRUE))
-    print(tail(D3$val))
-    print(tail(D3$val - m3_new))
-    print(tail(D3$y))
   }  
 
   y1 <- min(y1)            # adaptive scaling x-axis
@@ -101,6 +93,8 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
 
   # plot data ----------------------------------------------------------------------------------
 
+  cat("-----------------------------------------------------------------------------------------------------------------------------\n")
+ 
   p <- ggplot() +
        xlab("") +
        ylab("") +
@@ -114,11 +108,15 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
       geom_line(aes(y=D$val-m_new,x=D$y),size=1,linetype="solid",color="black")+ 
       geom_point(aes(y=D$val-m_new,x=D$y),pch=16,size=4,color=D$col)
     if (orig){p=p+geom_line(aes(y=D$val,x=D$y),size=1,linetype="solid",color="grey")}                              
+  print(paste0("---- ",period, " top 5 NASA/GISS ----\n "))
+  cat(paste0(c(1:5),": ",rev(tail(D$val[order(D$val)],n=5)), " (", rev(tail(D$y[order(D$val)],n=5)),")\n"))
   }
   if (!is.na(match('NASA',datasets)) & length(datasets)>1){
     p=p+geom_line(aes(y=D$val-m_new,x=D$y),size=1.5,linetype="solid",color="orange")
     p=p+annotate("text",x=y1+(2020-y1)/2-35,y=0.95,label="NASA/GISS",color="orange",size=6)  
-    p=p+annotate("text",x=y1+(2020-y1)/2-35,y=0.85,label=paste0("(",out[2],")"),color="orange",size=4)  
+    p=p+annotate("text",x=y1+(2020-y1)/2-35,y=0.85,label=paste0("(data until ",out[2],")"),color="orange",size=4)  
+  cat(paste0("---- ",period, " top 5 NASA/GISS ----\n "))
+  cat(paste0(c(1:5),": ",rev(tail(D$val[order(D$val)],n=5)), " (", rev(tail(D$y[order(D$val)],n=5)),")\n"))
   }
 
   # Copernicus
@@ -131,11 +129,16 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
     }
     if (orig){p=p+geom_line(aes(y=D2$val,x=D2$y),size=1,linetype="solid",color="grey")}                            
     if (refs < y1Cop){p=p+labs(subtitle=paste(textCopernicus))+theme(plot.subtitle = element_text(color = "red"))} 
+  print(paste0("---- ",period, " top 5 Copernicus ----\n "))
+  cat(paste0(c(1:5),": ",rev(tail(D2$val[order(D2$val)],n=5)), " (", rev(tail(D2$y[order(D2$val)],n=5)),")\n"))
   }
   if (!is.na(match('Copernicus',datasets)) & length(datasets)>1){
     p=p+annotate("text",x=y1+(2020-y1)/2-5,y=0.95,label="Copernicus ERA5",color="red",size=6)  
+    p=p+annotate("text",x=y1+(2020-y1)/2-5,y=0.85,label=paste0("(data until ",out2[2],")"),color="red",size=4)  
     if (refs > y1Cop){p=p+geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1.5,linetype="solid",color="red",na.rm=TRUE)}  
     if (refs < y1Cop){p=p+labs(subtitle=paste(textCopernicus))+theme(plot.subtitle = element_text(color = "red"))}  
+  print(paste0("---- ",period, " top 5 Copernicus ----\n "))
+  cat(paste0(c(1:5),": ",rev(tail(D2$val[order(D2$val)],n=5)), " (", rev(tail(D2$y[order(D2$val)],n=5)),")\n"))
   }
 
   # HadCRUT
@@ -145,11 +148,15 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
       geom_line(aes(y=D3$val-m3_new,x=D3$y),size=1,linetype="solid",color="black",na.rm=TRUE)+
       geom_point(aes(y=D3$val-m3_new,x=D3$y),pch=16,size=4,color=D3$col,na.rm=TRUE)
     if (orig){p=p+geom_line(aes(y=D3$val,x=D3$y),size=1,linetype="solid",color="grey")}                               
+  cat(paste0("---- ",period, " top 5 HadCRUT ----\n "))
+  cat(paste0(c(1:5),": ",rev(tail(D3$val[order(D3$val)],n=5)), " (", rev(tail(D3$y[order(D3$val)],n=5)),")\n"))
   }
   if (!is.na(match('HadCRUT',datasets)) & length(datasets)>1){
     p=p+geom_line(aes(y=D3$val-m3_new,x=D3$y),size=1.5,linetype="solid",color="brown",na.rm=TRUE)
     p=p+annotate("text",x=y1+(2020-y1)/2+25,y=0.95,label="HadCRUT4",color="brown",size=6)  
-    p=p+annotate("text",x=y1+(2020-y1)/2+25,y=0.85,label=paste0("(",out3[2],")"),color="brown",size=4)  
+    p=p+annotate("text",x=y1+(2020-y1)/2+25,y=0.85,label=paste0("(data until ",out3[2],")"),color="brown",size=4)  
+  cat(paste0("---- ",period, " top 5 HadCRUT ----\n "))
+  cat(paste0(c(1:5),": ",rev(tail(D3$val[order(D3$val)],n=5)), " (", rev(tail(D3$y[order(D3$val)],n=5)),")\n"))
   }
   p=p+theme(
       axis.text.x=element_text(size=20,angle = 90,vjust=0.5)
@@ -168,4 +175,12 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
 
   print(p)
   if (save_option){ggsave(plot=p,file=save_name, bg = "transparent",width = 11, height = 6)}
+
+  cat("-----------------------------------------------------------------------------------------------------------------------------\n")
+
 }
+
+
+
+
+
