@@ -1,13 +1,13 @@
 # globtemp
-Function for plotting global temperature anomalies from [NASA/GISS](https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv), [Copernicus](https://climate.copernicus.eu/sites/default/files/2020-02/ts_12month_anomaly_Global_ea_2t_202001_v01.csv), and/or [HadCRUT4 annual](https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.annual_ns_avg.txt) / [HadCRUT4 monthly](https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.6.0.0.monthly_ns_avg.txt), relative to desired reference period.
+Function for plotting monthly or yearly global temperature anomalies from [NASA/GISS](https://data.giss.nasa.gov/gistemp), [Copernicus](https://climate.copernicus.eu/climate-bulletins), and/or [HadCRUT4](https://www.metoffice.gov.uk/hadobs/hadcrut4) relative to desired reference period.
 
 ## Prerequisites
-R package ggplot2
+R packages ggplot2 and lubridate (included in tidyverse)
 
-## Included functions
-* readCopernicus.r, readHadCRUT.r, and readNASA.r: functions for reading data from Copernicus/HadCRUT/NASA tables, respectively.
+## Functions
+* readCopernicus.r, readHadCRUT.r, and readNASA.r: functions for reading the most resent data from Copernicus/HadCRUT/NASA, respectively.
 * anom2anom.r: function for changing the reference period for timeseries of anomalies.
-* distrCol.r: function for distribution of colors blue/red/black for anomalies under/over/equal to desired reference period.
+* distr_col.r: function for distribution of colors blue/red/black for anomalies under/over/equal to desired reference period.
 
 ## User input
 * Dataset(s) to plot: e.g. datasets <- c('NASA') for only NASA/GISS or datasets <- c('NASA','Copernicus') for comparing NASA/GISS and Copernicus values
@@ -20,15 +20,11 @@ R package ggplot2
 
 ## Examples in R
 ```
-source("globtemp.r")
-
 globtemp(datasets=c('NASA'),refs=1961,refe=1990,period='Yearly',orig=F,save_option=F,save_name=NA)
 ```
 ![test](/example_yearly.png)
 
 ```
-source("globtemp.r")
-
 globtemp(datasets=c('NASA','Copernicus','HadCRUT'),refs=1981,refe=2010,period='January',orig=F,save_option=T,save_name="example_compare.png")
 ```
 ![test](/example_compare.png)
