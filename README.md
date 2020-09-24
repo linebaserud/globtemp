@@ -1,5 +1,5 @@
 # globtemp
-Function for plotting monthly or yearly global temperature anomalies from [NASA/GISS](https://data.giss.nasa.gov/gistemp), [Copernicus](https://climate.copernicus.eu/climate-bulletins), and/or [HadCRUT4](https://www.metoffice.gov.uk/hadobs/hadcrut4) relative to desired reference period.
+Function for plotting updated monthly or yearly global temperature anomalies from [NASA/GISS](https://data.giss.nasa.gov/gistemp), [Copernicus](https://climate.copernicus.eu/climate-bulletins), and/or [HadCRUT4](https://www.metoffice.gov.uk/hadobs/hadcrut4) relative to desired reference period.
 
 ## Prerequisites
 R packages ggplot2 and lubridate (included in tidyverse)
@@ -18,7 +18,7 @@ R packages ggplot2 and lubridate (included in tidyverse)
 
 * Datafiles (change? see issue 7)
 
-## Examples in R
+## Examples R
 ```
 globtemp(datasets=c('NASA'),refs=1961,refe=1990,period='Yearly',orig=F,save_option=F,save_name=NA)
 ```
@@ -28,3 +28,7 @@ globtemp(datasets=c('NASA'),refs=1961,refe=1990,period='Yearly',orig=F,save_opti
 globtemp(datasets=c('NASA','Copernicus','HadCRUT'),refs=1981,refe=2010,period='January',orig=F,save_option=T,save_name="example_compare.png")
 ```
 ![test](/example_compare.png)
+
+## Contact
+
+Email: Line Båserud (lineb@met.no)
