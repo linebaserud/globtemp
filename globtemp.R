@@ -95,12 +95,15 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
   # plot data ----------------------------------------------------------------------------------
 
   cat("-----------------------------------------------------------------------------------------------------------------------------\n")
- 
+  print(paste0("Top 5 relative to ", refs, "-", refe, ":")) 
+  cat("\n")  
+
   p <- ggplot() +
        xlab("") +
        ylab("") +
-       geom_hline(yintercept = 0, color = "black") +
-       labs(title = paste(period, "temperature anomalies (°C)  relative to", refs, "-", refe))
+       geom_hline(yintercept = 0, color = "grey") +
+       geom_segment(aes(x=refs,xend=refe,y=0,yend=0),color = "grey",size=2) + 
+       labs(title = paste(period, "global temperature anomalies (°C)  relative to", refs, "-", refe))
 
   # NASA
   if (!is.na(match('NASA', datasets)) & length(datasets) == 1) {
@@ -117,7 +120,7 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
     p=p+annotate("text",x=y1+(2020-y1)/2-35,y=0.95,label="NASA/GISS",color="orange",size=6)  
     p=p+annotate("text",x=y1+(2020-y1)/2-35,y=0.85,label=paste0("(data until ",out[2],")"),color="orange",size=4)  
   cat(paste0("---- ",period, " top 5 NASA/GISS ----\n "))
-  cat(paste0(c(1:5),": ",rev(tail(D$val[order(D$val)],n=5)), " (", rev(tail(D$y[order(D$val)],n=5)),")\n"))
+  cat(paste0(c(1:5),": ",format(round(rev(tail(D$val[order(D$val)],n=5)),2),nsmall=2), " (", rev(tail(D$y[order(D$val)],n=5)),")\n"))
   }
 
   # Copernicus
@@ -139,7 +142,7 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
     if (refs > y1Cop){p=p+geom_line(aes(y=D2$val-m2_new,x=D2$y),size=1.5,linetype="solid",color="red",na.rm=TRUE)}  
     if (refs < y1Cop){p=p+labs(subtitle=paste(textCopernicus))+theme(plot.subtitle = element_text(color = "red"))}  
   cat(paste0("---- ",period, " top 5 Copernicus ----\n "))
-  cat(paste0(c(1:5),": ",rev(tail(D2$val[order(D2$val)],n=5)), " (", rev(tail(D2$y[order(D2$val)],n=5)),")\n"))
+  cat(paste0(c(1:5),": ",format(round(rev(tail(D2$val[order(D2$val)],n=5)),2),nsmall=2), " (", rev(tail(D2$y[order(D2$val)],n=5)),")\n"))
   }
 
   # HadCRUT
@@ -157,7 +160,7 @@ globtemp <- function(datasets, refs, refe, period, orig, save_option, save_name)
     p=p+annotate("text",x=y1+(2020-y1)/2+25,y=0.95,label="HadCRUT4",color="brown",size=6)  
     p=p+annotate("text",x=y1+(2020-y1)/2+25,y=0.85,label=paste0("(data until ",out3[2],")"),color="brown",size=4)  
   cat(paste0("---- ",period, " top 5 HadCRUT ----\n "))
-  cat(paste0(c(1:5),": ",rev(tail(D3$val[order(D3$val)],n=5)), " (", rev(tail(D3$y[order(D3$val)],n=5)),")\n"))
+  cat(paste0(c(1:5),": ",format(round(rev(tail(D3$val[order(D3$val)],n=5)),2),nsmall=2), " (", rev(tail(D3$y[order(D3$val)],n=5)),")\n"))
   }
   p=p+theme(
       axis.text.x=element_text(size=20,angle = 90,vjust=0.5)
