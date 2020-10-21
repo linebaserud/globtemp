@@ -10,22 +10,16 @@ R packages ggplot2 and lubridate (included in tidyverse)
 * distr_col.r: function for distribution of colors blue/red/black for anomalies under/over/equal to desired reference period.
 
 ## User input
-* Dataset(s) to plot: e.g. datasets <- c('NASA') for only NASA/GISS or datasets <- c('NASA','Copernicus') for comparing NASA/GISS and Copernicus values
-* Start and end of desired reference period: e.g. refs<-1981 and refe<-2010
-* Period: e.g. 'Yearly', or 'January', or 'February',...
-* Option (TRUE/FALSE) to also plot data relative to original reference period: e.g. orig<-F
-* Option (TRUE/FALSE) to save .png
-
-* Datafiles (change? see issue 7)
+Dataset(s) to plot, start and end of desired reference period, period of the year (e.g. 'Yearly', or 'January', or 'February',...), and option (TRUE/FALSE) to save plot as .png
 
 ## Examples R
 ```
-globtemp(datasets=c('NASA'),refs=1961,refe=1990,period='Yearly',orig=F,save_option=F,save_name=NA)
+globtemp(datasets=c('NASA'),refs=1961,refe=1990,period='Yearly',save_option=F,save_name=NA)
 ```
 ![test](figs/example_yearly.png)
 
 ```
-globtemp(datasets=c('NASA','Copernicus','HadCRUT'),refs=1981,refe=2010,period='January',orig=F,save_option=T,save_name="example_compare.png")
+globtemp(datasets=c('NASA','Copernicus','HadCRUT'),refs=1981,refe=2010,period='September',save_option=T,save_name="example.png")
 ```
 ![test](figs/example_sept2.png)
 
