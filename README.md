@@ -14,12 +14,12 @@ Dataset(s) to plot, start and end of desired reference period, period of the yea
 
 ## Examples R
 ```
-globtemp(datasets=c('NASA'),refs=1961,refe=1990,period='Yearly',save_option=F,save_name=NA)
+globtemp(c('NASA'), 1961, 1990, 'Yearly', save_option = FALSE, save_name = NA)
 ```
 ![test](figs/example_yearly.png)
 
 ```
-globtemp(datasets=c('NASA','Copernicus','HadCRUT'),refs=1981,refe=2010,period='September',save_option=T,save_name="example.png")
+globtemp(c('NASA','Copernicus','HadCRUT'), 1981, 2010, 'September', save_option = TRUE, save_name = "example.png")
 ```
 ![test](figs/example_sept2.png)
 
