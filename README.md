@@ -27,7 +27,7 @@ globtemp(datasets=c('NASA'),refs=1961,refe=1990,period='Yearly',orig=F,save_opti
 ```
 globtemp(datasets=c('NASA','Copernicus','HadCRUT'),refs=1981,refe=2010,period='January',orig=F,save_option=T,save_name="example_compare.png")
 ```
-![test](figs/example_compare.png)
+![test](figs/example_sept.png)
 
 ## Contact
 
