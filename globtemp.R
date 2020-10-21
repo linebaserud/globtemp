@@ -118,7 +118,7 @@ globtemp <- function(datasets, refs, refe, period, save_option, save_name){
     p <- p + 
          geom_line(aes(y = D$val - m_new, x = D$y), size = 1.5, linetype = "solid", color = "orange") +
          annotate("text", x = y1 + (2020 - y1)/2 - 35, y = 0.95, label = "NASA/GISS", color = "orange", size = 6) + 
-         annotate("text", x = y1 + (2020 - y1)/2 - 35, y = 0.85, label = paste0("(data until ", out[2], ")"), color = "orange", size = 4)  
+         annotate("text", x = y1 + (2020 - y1)/2 - 35, y = 0.85, label = paste0("(last data point ", out[2], ")"), color = "orange", size = 4)  
   cat(paste0("---- ", period, " top 5 NASA/GISS ----\n "))
   cat(paste0(c(1:5), ": ", format(round(rev(tail(D$val[order(D$val)], n = 5)) - m_new, 2), nsmall = 2), " (", rev(tail(D$y[order(D$val)], n = 5)), ")\n"))
   }
@@ -138,7 +138,7 @@ globtemp <- function(datasets, refs, refe, period, save_option, save_name){
   if (!is.na(match('Copernicus', datasets)) & length(datasets) > 1){
     p <- p + 
          annotate("text", x = y1 + (2020 - y1)/2 - 5, y = 0.95, label = "Copernicus ERA5", color = "red", size = 6) +
-         annotate("text", x = y1 + (2020 - y1)/2 - 5, y = 0.85, label = paste0("(data until ", out2[2], ")"), color = "red", size = 4)  
+         annotate("text", x = y1 + (2020 - y1)/2 - 5, y = 0.85, label = paste0("(last data point ", out2[2], ")"), color = "red", size = 4)  
     if (refs > y1Cop){p <- p + geom_line(aes(y = D2$val - m2_new, x = D2$y), size = 1.5, linetype = "solid", color = "red", na.rm = TRUE)}  
     if (refs < y1Cop){p <- p + labs(subtitle = paste(textCopernicus)) + theme(plot.subtitle = element_text(color = "red"))}  
   cat(paste0("---- ", period, " top 5 Copernicus ----\n "))
@@ -158,7 +158,7 @@ globtemp <- function(datasets, refs, refe, period, save_option, save_name){
     p <- p +
          geom_line(aes(y = D3$val - m3_new, x = D3$y), size = 1.5, linetype = "solid", color = "brown", na.rm = TRUE) +
          annotate("text", x = y1 + (2020 - y1)/2 + 25, y = 0.95, label = "HadCRUT4", color = "brown", size = 6)  +
-         annotate("text", x = y1 + (2020 - y1)/2 + 25, y = 0.85, label = paste0("(data until ", out3[2], ")"), color = "brown", size = 4)  
+         annotate("text", x = y1 + (2020 - y1)/2 + 25, y = 0.85, label = paste0("(last data point ", out3[2], ")"), color = "brown", size = 4)  
   cat(paste0("---- ", period, " top 5 HadCRUT ----\n "))
   cat(paste0(c(1:5), ": ", format(round(rev(tail(D3$val[order(D3$val)], n = 5)) - m3_new, 2), nsmall = 2), " (", rev(tail(D3$y[order(D3$val)], n = 5)), ")\n"))
   }
