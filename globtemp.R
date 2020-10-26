@@ -44,6 +44,7 @@ globtemp <- function(datasets, refs, refe, period, save_option, save_name){
     refsNASA <- 1951
     refeNASA <- 1980
     y1NASA <- 1880
+    textNASA_short <- "NASA/GISS"
     textNASA <- "NASA/GISS GISTEMP v4 (NOAA GHCN v4 and ERSST v5)"
     if (refsNASA == refs & refeNASA == refe) {m_new <- 0}                           # if ref period equal to original...
     if (refsNASA != refs | refeNASA != refe) {m_new <- anom2anom(D, refs, refe)}    # ...else change ref period
@@ -62,6 +63,7 @@ globtemp <- function(datasets, refs, refe, period, save_option, save_name){
     refeCop <- 2010
     y1Cop <- 1979 
     yeCop <- D2$y[]
+    textCopernicus_short <- "ERA5 Copernicus"
     textCopernicus <- "ERA5 Copernicus Climate Change Service/ECMWF "
     if (y1Cop > refs) {textCopernicus <- "** WARNING **: Copernicus data does not cover entire reference period"} 
     if (refsCop == refs & refeCop == refe){m2_new <- 0}                            # if ref period equal to original...
@@ -80,6 +82,7 @@ globtemp <- function(datasets, refs, refe, period, save_option, save_name){
     refsHad <- 1961
     refeHad <- 1990
     y1Had <- 1850
+    textHadCRUT_short <- "HadCRUT4"
     textHadCRUT <- "HadCRUT4: CRUTEM4 surface air temperature + HadSST3 sea-surface temperature"
     if (refsHad == refs & refeHad == refe) {m3_new <- 0}                           # if chosen ref period equal to original...
     if (refsHad != refs | refeHad != refe) {m3_new <- anom2anom(D3, refs, refe)}   # ...else change ref period
@@ -104,6 +107,28 @@ globtemp <- function(datasets, refs, refe, period, save_option, save_name){
     cat(paste0(c(1:5), ": ", format(round(rev(tail(df_val[order(df_val)], n = 5)) - new_mean, 2), nsmall = 2), " (", rev(tail(df_y[order(df_val)], n = 5)), ")\n")) 
   }
 
+# dfname better name. use textNASA etc when using t5
+# if columns then ref period grey line on top or columns transp?
+# new_mean not, more like offset 
+
+  plot_single_points <- function(p, df_val, df_y, df_col, new_mean, df_name) {
+    p <- p +
+         labs(subtitle = paste(df_name)) +
+         geom_line(aes(y = df_val - new_mean, x = df_y), size = 1, linetype = "solid", color = "black") +
+         geom_point(aes(y = df_val - new_mean, x = df_y), pch = 16, size = 4, color = df_col)
+    return(p)
+  }
+
+  plot_plural <- function(p, df_val, df_y, new_mean, line_color, df_name, last_data_point, text_pos_offset) {
+    p <- p +
+         geom_line(aes(y = df_val - new_mean, x = df_y), size = 1.5, linetype = "solid", color = line_color, na.rm = TRUE) +
+         annotate("text", x = y1 + (2020 - y1)/2 - text_pos_offset, y = 0.95, label = df_name, color = line_color, size = 6) +
+         annotate("text", x = y1 + (2020 - y1)/2 - text_pos_offset, y = 0.85, label = paste0("(", last_data_point, ")"), color = line_color, size = 4)
+    return(p)
+  }
+
+
+
 
   p <- ggplot() +
        xlab("") +
@@ -113,55 +138,49 @@ globtemp <- function(datasets, refs, refe, period, save_option, save_name){
        labs(title = paste(period, "global temperature anomalies (°C)  relative to", refs, "-", refe))
 
   # NASA
+  # plot as single dataset
   if (!is.na(match('NASA', datasets)) & length(datasets) == 1) {
-    p <- p + 
-         labs(subtitle = paste(textNASA)) +
-         geom_line(aes(y = D$val - m_new, x = D$y), size = 1, linetype = "solid", color = "black") + 
-         geom_point(aes(y = D$val - m_new, x = D$y), pch = 16, size = 4, color = D$col)
-  top5(period, D$val, D$y, m_new, "NASA/GISS") 
+    p <- plot_single_points(p, D$val, D$y, D$col, m_new, textNASA) 
+    top5(period, D$val, D$y, m_new, textNASA_short)
   }
+  # plot as part of comparison several datasets
   if (!is.na(match('NASA', datasets)) & length(datasets) > 1){
-    p <- p + 
-         geom_line(aes(y = D$val - m_new, x = D$y), size = 1.5, linetype = "solid", color = "orange") +
-         annotate("text", x = y1 + (2020 - y1)/2 - 45, y = 0.95, label = "NASA/GISS", color = "orange", size = 6) + 
-         annotate("text", x = y1 + (2020 - y1)/2 - 45, y = 0.85, label = paste0("(", out[2], ")"), color = "orange", size = 4)  
-  top5(period, D$val, D$y, m_new, "NASA/GISS") 
+    p <- plot_plural(p, D$val, D$y, m_new, "orange", textNASA_short, out[2], 45) 
+    top5(period, D$val, D$y, m_new, textNASA_short) 
   }
 
   # Copernicus
+  # plot as single dataset
   if (!is.na(match('Copernicus', datasets)) & length(datasets) == 1){
-    if (refs > y1Cop){
-      p <- p +
-           labs(subtitle = paste(textCopernicus)) +
-           geom_line(aes(y = D2$val - m2_new, x = D2$y), size = 1, linetype = "solid", color = "black") + 
-           geom_point(aes(y = D2$val - m2_new, x = D2$y), pch = 16, size = 4, color = D2$col)
-    }
-    if (refs < y1Cop){p <- p + labs(subtitle = paste(textCopernicus)) + theme(plot.subtitle = element_text(color = "red"))} 
-  top5(period, D2$val, D2$y, m2_new, "Copernicus") 
+    # check if dataset covers reference period, plot or print warning
+    if (refs >= y1Cop){
+      p <- plot_single_points(p, D2$val, D2$y, D2$col, m2_new, textCopernicus) 
+      top5(period, D2$val, D2$y, m2_new, textCopernicus_short) 
+    } else {
+      p <- p + labs(subtitle = paste(textCopernicus)) + theme(plot.subtitle = element_text(color = "red"))
+    } 
   }
-  if (!is.na(match('Copernicus', datasets)) & length(datasets) > 1){
-    p <- p + 
-         annotate("text", x = y1 + (2020 - y1)/2 - 5, y = 0.95, label = "Copernicus ERA5", color = "red", size = 6) +
-         annotate("text", x = y1 + (2020 - y1)/2 - 5, y = 0.85, label = paste0("(", out2[2], ")"), color = "red", size = 4)  
-    if (refs > y1Cop){p <- p + geom_line(aes(y = D2$val - m2_new, x = D2$y), size = 1.5, linetype = "solid", color = "red", na.rm = TRUE)}  
-    if (refs < y1Cop){p <- p + labs(subtitle = paste(textCopernicus)) + theme(plot.subtitle = element_text(color = "red"))}  
-  top5(period, D2$val, D2$y, m2_new, "Copernicus") 
+  # plot as part of comparison several datasets
+  if (!is.na(match('Copernicus', datasets)) & length(datasets) > 1){ 
+    # check if dataset covers reference period, plot or print warning
+    if (refs >= y1Cop){
+      p <- plot_plural(p, D2$val, D2$y, m2_new, "red", textCopernicus_short, out2[2], 5)
+      top5(period, D2$val, D2$y, m2_new, textCopernicus_short) 
+    } else {
+      p <- p + labs(subtitle = paste(textCopernicus)) + theme(plot.subtitle = element_text(color = "red"))
+    }
   }
 
   # HadCRUT
+  # plot as single dataset
   if (!is.na(match('HadCRUT', datasets)) & length(datasets) == 1){
-    p <-p +
-        labs(subtitle = paste(textHadCRUT)) +
-        geom_line(aes(y = D3$val - m3_new, x = D3$y), size = 1, linetype = "solid", color = "black", na.rm = TRUE) +
-        geom_point(aes(y = D3$val - m3_new, x = D3$y), pch = 16, size = 4, color = D3$col, na.rm = TRUE)
-  top5(period, D3$val, D3$y, m3_new, "HadCRUT") 
+    p <- plot_single_points(p, D3$val, D3$y, D3$col, m3_new, textHadCRUT) 
+    top5(period, D3$val, D3$y, m3_new, textHadCRUT_short) 
   }
+  # plot as part of comparison several datasets
   if (!is.na(match('HadCRUT',datasets)) & length(datasets) > 1){
-    p <- p +
-         geom_line(aes(y = D3$val - m3_new, x = D3$y), size = 1.5, linetype = "solid", color = "brown", na.rm = TRUE) +
-         annotate("text", x = y1 + (2020 - y1)/2 + 35, y = 0.95, label = "HadCRUT4", color = "brown", size = 6)  +
-         annotate("text", x = y1 + (2020 - y1)/2 + 35, y = 0.85, label = paste0("(", out3[2], ")"), color = "brown", size = 4)  
-  top5(period, D3$val, D3$y, m3_new, "HadCRUT") 
+    p <- plot_plural(p, D3$val, D3$y, m3_new, "brown", textHadCRUT_short, out3[2], -35) 
+    top5(period, D3$val, D3$y, m3_new, textHadCRUT_short) 
   }
 
   p <- p + theme(axis.text.x = element_text(size = 20, angle = 90, vjust = 0.5)
