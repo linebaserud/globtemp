@@ -40,7 +40,7 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
   year_min <- data.frame()
   year_max <- data.frame()
   val_max  <- data.frame()
-  val_min <- data.frame()
+  val_min  <- data.frame()
 
   # NASA/GISS
   if (!is.na(match('NASA', datasets))) {
@@ -56,8 +56,8 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
     D <- cbind(D, distr_col(D, m_new))                                                # add column with colors for plotting
     year_min <- rbind(year_min, y1_nasa)
     year_max <- rbind(year_max, tail(D$y, n = 1))  
-    val_max <- rbind(val_max, max(D$val - m_new, na.rm = TRUE))
-    val_min <- rbind(val_min, min(D$val - m_new, na.rm = TRUE))
+    val_max  <- rbind(val_max, max(D$val - m_new, na.rm = TRUE))
+    val_min  <- rbind(val_min, min(D$val - m_new, na.rm = TRUE))
   }
 
   # Copernicus
@@ -76,8 +76,8 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
     D2 <- cbind(D2, distr_col(D2, m2_new))                                         # add column with colors for plotting
     year_min <- rbind(year_min, ceiling(y1_era5 / 10) * 10)
     year_max <- rbind(year_max, tail(D2$y, n = 1))  
-    val_max <- rbind(val_max, max(D2$val - m2_new, na.rm = TRUE)) 
-    val_min <- rbind(val_min, min(D2$val - m2_new, na.rm = TRUE)) 
+    val_max  <- rbind(val_max, max(D2$val - m2_new, na.rm = TRUE)) 
+    val_min  <- rbind(val_min, min(D2$val - m2_new, na.rm = TRUE)) 
   }
 
   # HadCRUT4
@@ -95,14 +95,14 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
     D3 <- cbind(D3, distr_col(D3, m3_new))                                         # add column with colors for plotting
     year_min <- rbind(year_min, y1_hadcrut)
     year_max <- rbind(year_max, tail(D3$y, n = 1))  
-    val_max <- rbind(val_max, max(D3$val - m3_new, na.rm = TRUE))
-    val_min <- rbind(val_min, min(D3$val - m3_new, na.rm = TRUE))
+    val_max  <- rbind(val_max, max(D3$val - m3_new, na.rm = TRUE))
+    val_min  <- rbind(val_min, min(D3$val - m3_new, na.rm = TRUE))
   }  
 
   year_min <- min(year_min) # adaptive scaling x-axis min
   year_max <- max(year_max) # adaptive scaling x-axis max
   val_max  <- max(val_max)   # adaptive scaling y-axis max
-  val_min <- min(val_min)   # adaptive scaling y-axis min
+  val_min  <- min(val_min)   # adaptive scaling y-axis min
 
   cat("-----------------------------------------------------------------------------------------------------------------------------\n\n")
 
