@@ -48,13 +48,13 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
     D <- out[[1]]
     refs_nasa <- 1951
     refe_nasa <- 1980
-    y1_nasa <- 1880
+    year_min_nasa <- 1880
     textNASA_short <- "NASA/GISS"
     textNASA <- "NASA/GISS GISTEMP v4 (NOAA GHCN v4 and ERSST v5)"
     if (refs_nasa == refs & refe_nasa == refe) {m_new <- 0}                           # if ref period equal to original...
     if (refs_nasa != refs | refe_nasa != refe) {m_new <- anom2anom(D, refs, refe)}    # ...else calculate offset
     D <- cbind(D, distr_col(D, m_new))                                                # add column with colors for plotting
-    year_min <- rbind(year_min, y1_nasa)
+    year_min <- rbind(year_min, year_min_nasa)
     year_max <- rbind(year_max, tail(D$y, n = 1))  
     val_max  <- rbind(val_max, max(D$val - m_new, na.rm = TRUE))
     val_min  <- rbind(val_min, min(D$val - m_new, na.rm = TRUE))
@@ -67,14 +67,14 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
     colnames(D2) <- c("y", "val")
     refs_era5 <- 1981
     refe_era5 <- 2010
-    y1_era5 <- 1979 
+    year_min_era5 <- 1979 
     textCopernicus_short <- "ERA5 Copernicus"
     textCopernicus <- "ERA5 Copernicus Climate Change Service/ECMWF "
-    if (y1_era5 > refs) {textCopernicus <- "** WARNING **:  ERA5 data do not cover entire reference period"} 
+    if (year_min_era5 > refs) {textCopernicus <- "** WARNING **:  ERA5 data do not cover entire reference period"} 
     if (refs_era5 == refs & refe_era5 == refe){m2_new <- 0}                            # if ref period equal to original...
     if (refs_era5 != refs | refe_era5 != refe){m2_new <- anom2anom(D2, refs, refe)}    # ...else calculate offset
     D2 <- cbind(D2, distr_col(D2, m2_new))                                         # add column with colors for plotting
-    year_min <- rbind(year_min, ceiling(y1_era5 / 10) * 10)
+    year_min <- rbind(year_min, ceiling(year_min_era5 / 10) * 10)
     year_max <- rbind(year_max, tail(D2$y, n = 1))  
     val_max  <- rbind(val_max, max(D2$val - m2_new, na.rm = TRUE)) 
     val_min  <- rbind(val_min, min(D2$val - m2_new, na.rm = TRUE)) 
@@ -87,13 +87,13 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
     D3 <- out3[[1]]; 
     refs_hadcrut <- 1961
     refe_hadcrut <- 1990
-    y1_hadcrut <- 1850
+    year_min_hadcrut <- 1850
     textHadCRUT_short <- "HadCRUT4"
     textHadCRUT <- "HadCRUT4: CRUTEM4 surface air temperature + HadSST3 sea-surface temperature"
     if (refs_hadcrut == refs & refe_hadcrut == refe) {m3_new <- 0}                           # if chosen ref period equal to original...
     if (refs_hadcrut != refs | refe_hadcrut != refe) {m3_new <- anom2anom(D3, refs, refe)}   # ...else calculate offset
     D3 <- cbind(D3, distr_col(D3, m3_new))                                         # add column with colors for plotting
-    year_min <- rbind(year_min, y1_hadcrut)
+    year_min <- rbind(year_min, year_min_hadcrut)
     year_max <- rbind(year_max, tail(D3$y, n = 1))  
     val_max  <- rbind(val_max, max(D3$val - m3_new, na.rm = TRUE))
     val_min  <- rbind(val_min, min(D3$val - m3_new, na.rm = TRUE))
@@ -134,7 +134,7 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
   # plot as single dataset
   if (!is.na(match('Copernicus', datasets)) & length(datasets) == 1){
     # check if dataset covers reference period, plot or print warning
-    if (refs >= y1_era5){
+    if (refs >= year_min_era5){
       if (plot_type == 'points')  p <- plot_singular_points(p, D2$val, D2$y, D2$col, m2_new, textCopernicus, out2[2]) 
       if (plot_type == 'bars')    p <- plot_singular_bars(p, D2$val, D2$y, D2$col, m2_new, textCopernicus, out2[2]) 
       if (plot_type != 'bars' & plot_type != 'points') cat(paste0('** WARNING **: set plot_type to "points" or "bars" \n\n'))
@@ -146,7 +146,7 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
   # plot as part of comparison several datasets
   if (!is.na(match('Copernicus', datasets)) & length(datasets) > 1){ 
     # check if dataset covers reference period, plot or print warning
-    if (refs >= y1_era5){
+    if (refs >= year_min_era5){
       p <- plot_plural_lines(p, D2$val, D2$y, m2_new, "red", textCopernicus_short, out2[2], year_min, year_max, 5, val_max)
       top5(period, refs, refe, D2$val, D2$y, m2_new, textCopernicus_short) 
     } else {
