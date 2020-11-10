@@ -39,8 +39,8 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
 
   year_min <- data.frame()
   year_max <- data.frame()
-  max_all <- data.frame()
-  min_all <- data.frame()
+  val_max  <- data.frame()
+  val_min <- data.frame()
 
   # NASA/GISS
   if (!is.na(match('NASA', datasets))) {
@@ -56,8 +56,8 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
     D <- cbind(D, distr_col(D, m_new))                                                # add column with colors for plotting
     year_min <- rbind(year_min, y1_nasa)
     year_max <- rbind(year_max, tail(D$y, n = 1))  
-    max_all <- rbind(max_all, max(D$val - m_new, na.rm = TRUE))
-    min_all <- rbind(min_all, min(D$val - m_new, na.rm = TRUE))
+    val_max <- rbind(val_max, max(D$val - m_new, na.rm = TRUE))
+    val_min <- rbind(val_min, min(D$val - m_new, na.rm = TRUE))
   }
 
   # Copernicus
@@ -76,8 +76,8 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
     D2 <- cbind(D2, distr_col(D2, m2_new))                                         # add column with colors for plotting
     year_min <- rbind(year_min, ceiling(y1_era5 / 10) * 10)
     year_max <- rbind(year_max, tail(D2$y, n = 1))  
-    max_all <- rbind(max_all, max(D2$val - m2_new, na.rm = TRUE)) 
-    min_all <- rbind(min_all, min(D2$val - m2_new, na.rm = TRUE)) 
+    val_max <- rbind(val_max, max(D2$val - m2_new, na.rm = TRUE)) 
+    val_min <- rbind(val_min, min(D2$val - m2_new, na.rm = TRUE)) 
   }
 
   # HadCRUT4
@@ -95,14 +95,14 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
     D3 <- cbind(D3, distr_col(D3, m3_new))                                         # add column with colors for plotting
     year_min <- rbind(year_min, y1_hadcrut)
     year_max <- rbind(year_max, tail(D3$y, n = 1))  
-    max_all <- rbind(max_all, max(D3$val - m3_new, na.rm = TRUE))
-    min_all <- rbind(min_all, min(D3$val - m3_new, na.rm = TRUE))
+    val_max <- rbind(val_max, max(D3$val - m3_new, na.rm = TRUE))
+    val_min <- rbind(val_min, min(D3$val - m3_new, na.rm = TRUE))
   }  
 
   year_min <- min(year_min) # adaptive scaling x-axis min
   year_max <- max(year_max) # adaptive scaling x-axis max
-  max_all <- max(max_all)   # adaptive scaling y-axis max
-  min_all <- min(min_all)   # adaptive scaling y-axis min
+  val_max  <- max(val_max)   # adaptive scaling y-axis max
+  val_min <- min(val_min)   # adaptive scaling y-axis min
 
   cat("-----------------------------------------------------------------------------------------------------------------------------\n\n")
 
@@ -126,7 +126,7 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
   }
   # plot as part of comparison several datasets
   if (!is.na(match('NASA', datasets)) & length(datasets) > 1){
-    p <- plot_plural_lines(p, D$val, D$y, m_new, "orange", textNASA_short, out[2], year_min, year_max, 45, max_all) 
+    p <- plot_plural_lines(p, D$val, D$y, m_new, "orange", textNASA_short, out[2], year_min, year_max, 45, val_max) 
     top5(period, refs, refe, D$val, D$y, m_new, textNASA_short) 
   }
 
@@ -147,7 +147,7 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
   if (!is.na(match('Copernicus', datasets)) & length(datasets) > 1){ 
     # check if dataset covers reference period, plot or print warning
     if (refs >= y1_era5){
-      p <- plot_plural_lines(p, D2$val, D2$y, m2_new, "red", textCopernicus_short, out2[2], year_min, year_max, 5, max_all)
+      p <- plot_plural_lines(p, D2$val, D2$y, m2_new, "red", textCopernicus_short, out2[2], year_min, year_max, 5, val_max)
       top5(period, refs, refe, D2$val, D2$y, m2_new, textCopernicus_short) 
     } else {
       p <- p + labs(subtitle = paste(textCopernicus)) + theme(plot.subtitle = element_text(color = "red"))
@@ -164,7 +164,7 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
   }
   # plot as part of comparison several datasets
   if (!is.na(match('HadCRUT',datasets)) & length(datasets) > 1){
-    p <- plot_plural_lines(p, D3$val, D3$y, m3_new, "brown", textHadCRUT_short, out3[2], year_min, year_max, -35, max_all) 
+    p <- plot_plural_lines(p, D3$val, D3$y, m3_new, "brown", textHadCRUT_short, out3[2], year_min, year_max, -35, val_max) 
     top5(period, refs, refe, D3$val, D3$y, m3_new, textHadCRUT_short) 
   }
 
@@ -182,7 +182,7 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_
 
   p <- p + 
        scale_x_continuous(limits = c(year_min - 10, year_max + 1), breaks = seq(year_min - 10, year_max + 1, 10)) +
-       scale_y_continuous(limits = c(floor(min_all / 0.5) * 0.5, ceiling(max_all / 0.5) * 0.5), breaks = seq(floor(min_all / 0.5) * 0.5, ceiling(max_all / 0.5) * 0.5, 0.5))
+       scale_y_continuous(limits = c(floor(val_min / 0.5) * 0.5, ceiling(val_max / 0.5) * 0.5), breaks = seq(floor(val_min / 0.5) * 0.5, ceiling(val_max / 0.5) * 0.5, 0.5))
 
   print(p)
   if (save_option){ggsave(plot = p, file = save_name, bg = "transparent", width = 11, height = 6)}
