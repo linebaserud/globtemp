@@ -29,7 +29,7 @@ for (fun in fun_list) {source(paste0("functions/", fun))}
 
 # main function -------------------------------------------------------------------------------
 
-globtemp <- function(datasets, refs, refe, period, plot_type, save_option, save_name){
+globtemp <- function(datasets, refs, refe, period, plot_type, save_option = FALSE, save_name = NA){
 
   # get data ----------------------------------------------------------------------------------
   
