@@ -29,7 +29,7 @@ globtemp(c('NASA'), 1961, 1990, 'Yearly', 'bars', save_option = FALSE, save_name
 ```
 globtemp(c('NASA','Copernicus','HadCRUT'), 1981, 2010, 'September', save_option = TRUE, save_name = "example.png")
 ```
-![test](figs/example_sept2.png)
+![test](figs/example_sept.png)
 
 ## Contact
 
