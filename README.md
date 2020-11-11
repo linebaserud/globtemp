@@ -12,7 +12,8 @@ R packages ggplot2 and lubridate (included in tidyverse)
 * top5.R: function for printing the top 5 years with the highest temperatures
 
 ## User input
-Dataset(s) to plot, start and end of desired reference period, period of the year (e.g. 'Yearly', or 'January', or 'February',...), plotting type ('bars' or 'points') and option (TRUE/FALSE) to save plot as .png
+Dataset(s) to plot (e.g. c('NASA') or c('NASA','ERA5','HadCRUT')), start of desired reference period (e.g. 1961), end of desired reference period (e.g. 1990), period of the year (e.g. 'Yearly', or 'January', or 'February',...), plotting type ('bars' or 'points') and option (TRUE/FALSE) to save plot as .png
+
 The plotting type is only needed if one single dataset is used as input. Several datasets are always presented as solid lines.
 
 ## Examples R
@@ -27,7 +28,7 @@ globtemp(c('NASA'), 1961, 1990, 'Yearly', 'bars', save_option = FALSE, save_name
 ![test](figs/example_yearly_bars.png)
 
 ```
-globtemp(c('NASA','Copernicus','HadCRUT'), 1981, 2010, 'September', save_option = TRUE, save_name = "example.png")
+globtemp(c('NASA','ERA5','HadCRUT'), 1981, 2010, 'September', save_option = TRUE, save_name = "example.png")
 ```
 ![test](figs/example_sept.png)
 
