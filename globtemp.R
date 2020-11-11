@@ -50,7 +50,7 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option = FALS
     refs_nasa <- 1951
     refe_nasa <- 1980
     year_min_nasa <- 1880
-    text_nasa_short <- "NASA/GISS"
+    text_nasa_short <- "GISTEMPv4"
     text_nasa <- "NASA/GISS GISTEMP v4 (NOAA GHCN v4 and ERSST v5)"
     if (refs_nasa == refs & refe_nasa == refe) {m_new <- 0}                                  # if ref period equal to original...
     if (refs_nasa != refs | refe_nasa != refe) {m_new <- anom2anom(D, refs, refe)}           # ...else calculate offset
@@ -69,7 +69,7 @@ globtemp <- function(datasets, refs, refe, period, plot_type, save_option = FALS
     refs_era5 <- 1981
     refe_era5 <- 2010
     year_min_era5 <- 1979 
-    text_era5_short <- "ERA5 Copernicus"
+    text_era5_short <- "ERA5"
     text_era5 <- "ERA5 Copernicus Climate Change Service/ECMWF "
     if (year_min_era5 > refs) {text_era5 <- "** WARNING **:  ERA5 data do not cover entire reference period"} 
     if (refs_era5 == refs & refe_era5 == refe){m2_new <- 0}                                  # if ref period equal to original...
