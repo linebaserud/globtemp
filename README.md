@@ -17,7 +17,7 @@ The plotting type is only needed if one single dataset is used as input. Several
 
 ## Examples R
 ```
-globtemp(c('NASA'), 1961, 1990, 'Yearly', save_option = FALSE, save_name = NA)
+globtemp(c('NASA'), 1961, 1990, 'Yearly', 'points', save_option = FALSE, save_name = NA)
 ```
 ![test](figs/example_yearly.png)
 
