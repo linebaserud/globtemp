@@ -19,7 +19,12 @@ The plotting type is only needed if one single dataset is used as input. Several
 ```
 globtemp(c('NASA'), 1961, 1990, 'Yearly', 'points', save_option = FALSE, save_name = NA)
 ```
-![test](figs/example_yearly.png)
+![test](figs/example_yearly_points.png)
+
+```
+globtemp(c('NASA'), 1961, 1990, 'Yearly', 'bars', save_option = FALSE, save_name = NA)
+```
+![test](figs/example_yearly_bars.png)
 
 ```
 globtemp(c('NASA','Copernicus','HadCRUT'), 1981, 2010, 'September', save_option = TRUE, save_name = "example.png")
