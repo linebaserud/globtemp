@@ -5,9 +5,6 @@
 *~
 *.swp
 
-plots/*
-archive/*
-
 .RData
 .Rhistory
 
