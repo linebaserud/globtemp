@@ -5,7 +5,7 @@ Function for plotting updated monthly or yearly global temperature anomalies fro
 R packages ggplot2 and lubridate (included in tidyverse)
 
 ## Supporting functions
-* read_era5.R, read_hadcrut4.R, and read_nasa.R: functions for reading the most resent data from Copernicus/HadCRUT/NASA, respectively.
+* read_era5.R, read_hadcrut4.R, and read_nasa.R: functions for retrieving/reading the most resent data.
 * anom2anom.R: function for changing the reference period for timeseries of anomalies.
 * distr_col.R: function for distribution of colors blue/red/black for anomalies under/over/equal to desired reference period.
 * plot_singular_points.R, plot_singular_bars.R, plot_plural_lines.R: functions for plotting
